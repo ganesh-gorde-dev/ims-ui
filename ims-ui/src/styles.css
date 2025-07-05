@@ -1,0 +1,57 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+.mat-icon {
+  color: #bbc6ef;
+  cursor: pointer;
+}
+
+.mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+.primary-color {
+  color: var(--mat-sys-primary);
+}
+
+.warn-color {
+  color: var(--mat-sys-warn);
+}
+
+.danger-color {
+  color: var(--mat-sys-error);
+}
+
+.primary-title {
+  color: var(--mat-sys-primary);
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.details-section label {
+  color: var(--mat-sys-tertiary);
+  font-size: 14px;
+}
+
+.details-section p {
+  font-size: 16px;
+  letter-spacing: 0px;
+  color: var(--mat-sys-on-surface);
+}
+
+.mat-mdc-dialog-title {
+  color: var(--mat-sys-primary) !important;
+}
+
+.mat-mdc-tab-body-content {
+  padding: 10px;
+}

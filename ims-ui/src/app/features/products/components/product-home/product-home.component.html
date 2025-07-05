@@ -1,0 +1,88 @@
+<div class="container-fluid">
+  <div class="row d-flex justify-content-end align-items-center my-4">
+    <button mat-fab extended color="primary" (click)="onAddProduct()">
+      <mat-icon>add</mat-icon> Add Product
+    </button>
+  </div>
+  <app-product-list (emitEvent)="onEmitEvent($event)"></app-product-list>
+</div>
+
+<ng-template #addProductDialog>
+  <h2 mat-dialog-title>
+    {{ dialogData.isEdit ? 'Edit Product' : 'Add Product' }}
+  </h2>
+  <mat-dialog-content>
+    <form [formGroup]="addProductForm" class="d-flex flex-column gap-3 my-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="categoryId">
+          <mat-option
+            *ngFor="let category of arrCategories"
+            [value]="category.category_id">
+            {{ category.category_name }}
+          </mat-option>
+        </mat-select>
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Product Code</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Product Code"
+          formControlName="productCode" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Product Name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Product Name"
+          formControlName="productName" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Sell Price</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Sell Price"
+          formControlName="sellPrice" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Purchase Price</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Purchase Price"
+          formControlName="purchasePrice" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!addProductForm.valid"
+      [mat-dialog-close]="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #deleteProductDialog>
+  <h2 mat-dialog-title>Delete Product</h2>
+  <mat-dialog-content>
+    Are you sure you want to delete product "{{
+      selectedProduct?.product_name
+    }}"?
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false">Cancel</button>
+    <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+  </mat-dialog-actions>
+</ng-template>

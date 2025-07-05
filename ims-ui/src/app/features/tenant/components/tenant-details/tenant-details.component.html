@@ -1,0 +1,292 @@
+<div class="container-fluid">
+  <button mat-fab extended class="my-2" (click)="onBack()">
+    <mat-icon>chevron_left</mat-icon>
+    {{ tenantData?.tenant_name }}
+  </button>
+
+  <mat-card class="p-5">
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="Configuration">
+        <div class="d-flex justify-content-end align-items-center my-4 pb-4">
+          <button
+            mat-fab
+            extended
+            color="primary"
+            (click)="onAddConfiguration()">
+            <mat-icon>{{ editMode ? 'edit' : 'add' }}</mat-icon>
+            {{ editMode ? 'Update' : 'Add' }} Configuration
+          </button>
+        </div>
+        <div class="d-flex flex-wrap gap-5">
+          <div class="d-flex flex-column justify-content-start details-section">
+            <label class="fw-semibold">Database Strategy</label>
+            <p>
+              {{
+                tenantConfiguration?.database_strategy
+                  | label : arrDatabaseStrategyTypes
+              }}
+            </p>
+          </div>
+          <div class="d-flex flex-column justify-content-start details-section">
+            <label class="fw-semibold">Authentication Type</label>
+            <span>{{
+              tenantConfiguration?.authentication_type
+                | label : arrAuthenticationTypes
+            }}</span>
+          </div>
+          <div class="d-flex flex-column justify-content-start details-section">
+            <label class="fw-semibold">Database Server</label>
+            <span>{{
+              tenantConfiguration?.database_server | label : arrDatabaseServer
+            }}</span>
+          </div>
+
+          <ng-container
+            *ngIf="tenantConfiguration?.database_server === 'POSTGRES'">
+            <div
+              class="d-flex flex-column justify-content-start details-section">
+              <label class="fw-semibold">Username</label>
+              <span>{{ tenantConfiguration?.database_config?.username }}</span>
+            </div>
+            <div
+              class="d-flex flex-column justify-content-start details-section">
+              <label class="fw-semibold">Password</label>
+              <span>{{ tenantConfiguration?.database_config?.password }}</span>
+            </div>
+            <div
+              class="d-flex flex-column justify-content-start details-section">
+              <label class="fw-semibold">Host</label>
+              <span>{{ tenantConfiguration?.database_config?.host }}</span>
+            </div>
+            <div
+              class="d-flex flex-column justify-content-start details-section">
+              <label class="fw-semibold">Port</label>
+              <span>{{ tenantConfiguration?.database_config?.port }}</span>
+            </div>
+            <div
+              class="d-flex flex-column justify-content-start details-section">
+              <label class="fw-semibold">Options</label>
+              <span>{{ tenantConfiguration?.database_config?.options }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </mat-tab>
+      <mat-tab label="Permission">
+        <div class="d-flex flex-column gap-3 my-4">
+          <div *ngIf="isAddPermission" class="d-flex justify-content-end">
+            <button
+              mat-fab
+              extended
+              color="primary"
+              (click)="onAddPermission()">
+              <mat-icon>add</mat-icon> Add Permission
+            </button>
+          </div>
+
+          <app-permission-list></app-permission-list>
+        </div>
+      </mat-tab>
+      <mat-tab label="User">
+        <div class="d-flex flex-column gap-3 my-4">
+          <div class="d-flex justify-content-end">
+            <button mat-fab extended color="primary" (click)="onAddUser()">
+              <mat-icon>add</mat-icon> Add User
+            </button>
+          </div>
+          <app-user-list (emitEvent)="onEmitEvent($event)"></app-user-list>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </mat-card>
+</div>
+
+<ng-template #addConfigurationDialog>
+  <h2 mat-dialog-title>Add Configuration</h2>
+  <mat-dialog-content>
+    <form [formGroup]="configurationForm" class="d-flex flex-column gap-3 my-4">
+      <mat-form-field>
+        <mat-label>Database Strategy</mat-label>
+        <mat-select
+          formControlName="databaseStrategy"
+          placeholder="Database Strategy">
+          <mat-option
+            *ngFor="let db of arrDatabaseStrategyTypes"
+            [value]="db.value"
+            >{{ db.label }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            configurationForm.get('databaseStrategy')?.hasError('required')
+          ">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Authentication Type</mat-label>
+        <mat-select
+          formControlName="authenticationType"
+          placeholder="Authentication Type">
+          <mat-option
+            *ngFor="let auth of arrAuthenticationTypes"
+            [value]="auth.value"
+            >{{ auth.label }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="
+            configurationForm.get('authenticationType')?.hasError('required')
+          ">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Database Server</mat-label>
+        <mat-select
+          formControlName="databaseServer"
+          placeholder="Database Server">
+          <mat-option
+            *ngFor="let auth of arrDatabaseServer"
+            [value]="auth.value"
+            >{{ auth.label }}</mat-option
+          >
+        </mat-select>
+        <mat-error
+          *ngIf="configurationForm.get('databaseServer')?.hasError('required')">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+      <ng-container
+        *ngIf="configurationForm.get('databaseServer')?.value === 'POSTGRES'">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput formControlName="username" placeholder="Username" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            placeholder="Password" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Host</mat-label>
+          <input matInput formControlName="host" placeholder="Host" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Port</mat-label>
+          <input
+            matInput
+            type="number"
+            formControlName="port"
+            placeholder="Port" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Options</mat-label>
+          <input matInput formControlName="options" placeholder="Options" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Database Name</mat-label>
+          <input
+            matInput
+            formControlName="database_name"
+            placeholder="Database Name" />
+        </mat-form-field>
+      </ng-container>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!configurationForm.valid"
+      [mat-dialog-close]="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #addUserDialog>
+  <h2 mat-dialog-title>Add User</h2>
+  <mat-dialog-content>
+    <form [formGroup]="userForm" class="d-flex flex-column gap-3 my-4">
+      <div class="d-flex justify-content-between align-items-center gap-3">
+        <mat-form-field class="flex-fill">
+          <mat-label>First Name</mat-label>
+          <input
+            matInput
+            formControlName="first_name"
+            placeholder="First Name" />
+          <mat-error *ngIf="userForm.get('first_name')?.hasError('required')">
+            Field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field class="flex-fill">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="last_name" placeholder="Last Name" />
+          <mat-error *ngIf="userForm.get('last_name')?.hasError('required')">
+            Field is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-form-field>
+        <mat-label>Phone Number</mat-label>
+        <input
+          type="number"
+          matInput
+          formControlName="phone_number"
+          placeholder="Phone Number" />
+        <mat-error *ngIf="userForm.get('phone_number')?.hasError('required')">
+          Field is required
+        </mat-error>
+        <mat-error *ngIf="userForm.get('phone_number')?.hasError('pattern')">
+          Invalid phone number
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" placeholder="Email" />
+        <mat-error *ngIf="userForm.get('email')?.hasError('required')">
+          Field is required
+        </mat-error>
+        <mat-error *ngIf="userForm.get('email')?.hasError('email')">
+          Invalid email
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input
+          type="text"
+          matInput
+          formControlName="password"
+          placeholder="Password" />
+        <mat-error *ngIf="userForm.get('password')?.hasError('required')">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role_id" placeholder="Role">
+          <mat-option *ngFor="let role of arrRoles" [value]="role.value">
+            {{ role.label }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="userForm.get('role_id')?.hasError('required')">
+          Field is required
+        </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!userForm.valid"
+      [mat-dialog-close]="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
