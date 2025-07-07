@@ -86,27 +86,54 @@ export class ProductHomeComponent {
 
     this.addProductForm.reset();
     this.addProductForm.markAsUntouched();
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        if (this.addProductForm.valid) {
-          const formValues = this.addProductForm.value;
+  async onAddProductSave() {
+    this.addProductForm.markAllAsTouched();
+    if (this.addProductForm.valid) {
+      const formValues = this.addProductForm.value;
 
-          const productPayload: ProductPayload = {
-            category_id: formValues.categoryId,
-            product_code: formValues.productCode,
-            product_name: formValues.productName,
-            sell_price: formValues.sellPrice,
-            purchase_price: formValues.purchasePrice,
-          };
+      const productPayload: ProductPayload = {
+        category_id: formValues.categoryId,
+        product_code: formValues.productCode,
+        product_name: formValues.productName,
+        sell_price: formValues.sellPrice,
+        purchase_price: formValues.purchasePrice,
+      };
 
-          await this._apiService.post(`product`, productPayload);
-          this.addProductForm.reset();
-          this._dialog.closeAll();
-          this.productListComponent.loadProducts();
-        }
-      }
-    });
+      await this._apiService.post(`product`, productPayload);
+      this.addProductForm.reset();
+      this._dialog.closeAll();
+      this.productListComponent.loadProducts();
+    }
+  }
+
+  async onEditProduct() {
+    this.addProductForm.markAllAsTouched();
+    if (this.addProductForm.valid) {
+      const formValues = this.addProductForm.value;
+      const productPayload: ProductPayload = {
+        category_id: formValues.categoryId,
+        product_code: formValues.productCode,
+        product_name: formValues.productName,
+        sell_price: formValues.sellPrice,
+        purchase_price: formValues.purchasePrice,
+      };
+
+      // Update existing tenant
+      await this._apiService.put<Product>(
+        `product/${this.dialogData.product!.product_id}`,
+        productPayload
+      );
+      this.addProductForm.reset();
+      this._dialog.closeAll();
+      this.productListComponent.loadProducts();
+    }
+  }
+
+  async onDeleteProduct() {
+    await this._apiService.delete(`product/${this.selectedProduct.product_id}`);
+    this.productListComponent.loadProducts();
   }
 
   onEmitEvent(event: any) {
@@ -140,45 +167,14 @@ export class ProductHomeComponent {
       data: this.dialogData,
       id: 'addTenantDialog',
     });
-
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        if (this.addProductForm.valid) {
-          const formValues = this.addProductForm.value;
-          const productPayload: ProductPayload = {
-            category_id: formValues.categoryId,
-            product_code: formValues.productCode,
-            product_name: formValues.productName,
-            sell_price: formValues.sellPrice,
-            purchase_price: formValues.purchasePrice,
-          };
-
-          // Update existing tenant
-          await this._apiService.put<Product>(
-            `product/${product.product_id}`,
-            productPayload
-          );
-          this.addProductForm.reset();
-          this._dialog.closeAll();
-          this.productListComponent.loadProducts();
-        }
-      }
-    });
   }
 
-  selectedProduct: Product | null = null;
+  selectedProduct!: Product;
   @ViewChild('deleteProductDialog') deleteProductDialog!: TemplateRef<any>;
   handleDeleteProduct(product: Product) {
     this.selectedProduct = product;
     const dialogRef = this._dialog.open(this.deleteProductDialog, {
       width: '400px',
-    });
-
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        await this._apiService.delete(`product/${product.product_id}`);
-        this.productListComponent.loadProducts();
-      }
     });
   }
 }

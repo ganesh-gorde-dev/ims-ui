@@ -31,6 +31,7 @@ import { LOGIN_TYPE } from '../../../shared/constant/db.constants';
 import { TenantConfigService } from '../../services/tenant-config.service';
 import { Environment } from '../../../../environments/environment.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
@@ -90,17 +91,19 @@ export class LoginComponent implements OnInit {
       width: '350px',
       disableClose: true,
     });
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        const tenantConfig: TenantApiConfig =
-          await this._apiService.get<TenantApiConfig>(
-            `tenant/${this.tenantCodeInput?.value}/details`
-          );
+  }
 
-        this.tenantCodeInput.reset();
-        this._tenantConfigService.switchTenant(tenantConfig);
-      }
-    });
+  async onTenantChange() {
+    const tenantConfig = await this._apiService.get<TenantApiConfig>(
+      `tenant/${this.tenantCodeInput?.value}/details`
+    );
+
+    if (tenantConfig) {
+      this.tenantCodeInput.reset();
+      this._tenantConfigService.switchTenant(tenantConfig);
+      this._dialog.closeAll(); // Explicitly close dialog only on success
+    }
+    // If tenantConfig is undefined (error), dialog remains open
   }
 
   initializeForm() {
@@ -153,12 +156,10 @@ export class LoginComponent implements OnInit {
   onRememberMeChange(event: MatCheckboxChange) {
     if (event.checked) {
       // Logic to handle "Remember Me" checked state
-      console.log('Remember Me is checked');
       const loginPayload: LoginPayload = this.loginForm.value;
       localStorage.setItem('rememberedUser', JSON.stringify(loginPayload));
     } else {
       // Logic to handle "Remember Me" unchecked state
-      console.log('Remember Me is unchecked');
       localStorage.removeItem('rememberedUser');
       this.loginForm.patchValue({
         username: '',
