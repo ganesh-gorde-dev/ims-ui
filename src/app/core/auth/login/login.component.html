@@ -1,0 +1,92 @@
+<div class="container-fluid">
+  <div class="row justify-content-start align-items-stretch vh-100 p-5">
+    <mat-card
+      class="col-md-4 col-sm-6 col-10 p-4 d-flex flex-column justify-content-center">
+      <img src="assets/images/logo-new.png" alt="logo" class="logo-image" />
+      <p class="text-muted text-center fw-semibold">
+        Welcome back, Please login to your account
+      </p>
+      <form [formGroup]="loginForm" class="d-flex flex-column gap-3 mx-5">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="username" />
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+            Field is required
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('username')?.hasError('email')">
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            (keyup.enter)="onLogin()"
+            matInput
+            [type]="hide() ? 'password' : 'text'"
+            formControlName="password" />
+          <button
+            mat-icon-button
+            matSuffix
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()">
+            <mat-icon>{{ hide() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Field is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-checkbox
+          formControlName="rememberMe"
+          (change)="onRememberMeChange($event)"
+          >Remember Me</mat-checkbox
+        >
+
+        <button mat-flat-button color="primary" (click)="onLogin()">
+          Login
+        </button>
+
+        <button mat-flat-button color="primary" (click)="onUserChange()">
+          Login as {{ isAdminLogin ? 'Tenant' : 'Admin' }}
+        </button>
+      </form>
+    </mat-card>
+    <div
+      class="col-md-8 col-sm-6 col-10 p-4 d-flex flex-column justify-content-start align-items-center bg-login"></div>
+  </div>
+  <!-- <div class="conveyor-wrapper">
+    <div class="belt"></div>
+    <div class="box" style="--i: 0"></div>
+    <div class="box" style="--i: 1"></div>
+    <div class="box" style="--i: 2"></div>
+  </div> -->
+</div>
+
+<ng-template #tenantCodeDialog let-dialogRef="dialogRef">
+  <h2 mat-dialog-title>Enter Tenant Code</h2>
+  <mat-dialog-content class="mat-typography">
+    <div class="d-flex flex-column gap-3 my-4">
+      <mat-form-field>
+        <mat-label>Tenant Code</mat-label>
+        <input
+          (keyup.enter)="dialogRef.close(tenantCodeInput.value)"
+          matInput
+          [formControl]="tenantCodeInput" />
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button class="error-button" (click)="dialogRef.close()">
+      Cancel
+    </button>
+    <button
+      mat-button
+      color="primary"
+      [mat-dialog-close]="true"
+      [disabled]="!tenantCodeInput.valid">
+      OK
+    </button>
+  </mat-dialog-actions>
+</ng-template>

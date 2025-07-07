@@ -1,0 +1,62 @@
+.logo-image {
+  transform: scale(0.6);
+}
+
+.bg-login {
+  background: url('/assets/images/bg-login.png') no-repeat center;
+  background-size: contain;
+}
+
+.conveyor-wrapper {
+  position: relative;
+  width: 100%;
+  height: 150px;
+  background: #f4f4f4;
+  overflow: hidden;
+  border-top: 4px solid #333;
+  border-bottom: 4px solid #333;
+}
+
+.belt {
+  position: absolute;
+  width: 200%;
+  height: 100px;
+  background: repeating-linear-gradient(
+    -45deg,
+    #555 0px,
+    #555 10px,
+    #777 10px,
+    #777 20px
+  );
+  top: 60px;
+  animation: beltMove 4s linear infinite;
+}
+
+@keyframes beltMove {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.box {
+  position: absolute;
+  bottom: 12px;
+  width: 60px;
+  height: 60px;
+  background: #c09050;
+  border: 2px solid #333;
+  animation: boxMove 6s linear infinite;
+  animation-delay: calc(var(--i) * 2s);
+}
+
+@keyframes boxMove {
+  0% {
+    left: -60px;
+  }
+  100% {
+    left: 100%;
+  }
+}

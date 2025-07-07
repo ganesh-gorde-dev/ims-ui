@@ -1,0 +1,44 @@
+<div class="container-fluid">
+  <div class="row d-flex justify-content-end align-items-center my-4">
+    <button mat-fab extended color="primary" (click)="onAddCategory()">
+      <mat-icon>add</mat-icon> Add Category
+    </button>
+  </div>
+  <app-category-list (emitEvent)="onEmitEvent($event)"></app-category-list>
+</div>
+
+<ng-template #addCategoryDialog>
+  <h2 mat-dialog-title>Add Category</h2>
+  <mat-dialog-content>
+    <form [formGroup]="addCategoryForm" class="d-flex flex-column gap-3 my-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Category Code</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Category Code"
+          formControlName="categoryCode" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Category Name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Category Name"
+          formControlName="categoryName" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!addCategoryForm.valid"
+      [mat-dialog-close]="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>

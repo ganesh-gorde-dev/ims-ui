@@ -1,0 +1,81 @@
+.main-layout-container {
+  height: 100vh;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.page-wrapper {
+  padding: 128px 16px 16px 16px;
+}
+
+.nav-logo {
+  height: 40px;
+  width: auto;
+  margin-right: 16px;
+}
+
+.theme-color {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.bread-crumbs {
+  color: var(--mat-sys-outline);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.dark-grey {
+  color: var(--mat-sys-outline);
+}
+
+.home-icon {
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.sticky-toolbar {
+  position: fixed;
+  top: 0;
+  z-index: 100;
+}
+
+.home-button button {
+  border-radius: 50%;
+  border: 2px solid var(--mat-sys-primary);
+  background-color: var(--mat-sys-surface);
+}
+
+.home-button mat-icon {
+  color: var(--mat-sys-primary);
+}
+
+.nav-link {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--mat-sys-outline);
+}
+
+.nav-link.active,
+.link-icons.active {
+  color: var(--mat-sys-primary);
+}
+
+.link-icons {
+  font-size: 18px;
+  padding: 3px;
+}
+
+.navigation-links {
+  height: 45px;
+}
+
+.navbar-first {
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
+}

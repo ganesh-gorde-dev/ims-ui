@@ -1,0 +1,62 @@
+<div class="main-layout-container position-relative">
+  <mat-toolbar color="primary" class="sticky-toolbar">
+    <mat-toolbar-row class="navbar-first">
+      <div class="d-flex align-items-center justify-content-start gap-2">
+        <img src="assets/images/logo-new.png" class="nav-logo" />
+        <div class="home-button">
+          <button type="button" mat-mini-fab (click)="redirectToPage()">
+            <mat-icon>home</mat-icon>
+          </button>
+        </div>
+        <span class="bread-crumbs">Home</span>
+        <mat-icon class="dark-grey">chevron_right</mat-icon>
+        <span class="bread-crumbs">{{ title }}</span>
+      </div>
+      <span class="spacer"></span>
+
+      <!-- <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
+        <mat-icon>dark_mode</mat-icon>
+      </button> -->
+      <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+        <mat-icon>format_color_fill</mat-icon>
+      </button> -->
+      <mat-menu #themeMenu="matMenu">
+        @for(theme of _themeService.getThemes(); track theme.id) {
+        <button mat-menu-item (click)="_themeService.setTheme(theme.id)">
+          <div class="d-flex align-items-center gap-2">
+            <span
+              class="theme-color"
+              [ngStyle]="{ 'background-color': theme.primary }"></span>
+            {{ theme.displayName }}
+          </div>
+        </button>
+        }
+      </mat-menu>
+      <button mat-icon-button aria-label="Logout" (click)="logout()">
+        <mat-icon class="danger">power_settings_new</mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="navigation-links" *ngIf="!isAdminLogin">
+      <ul class="d-flex align-items-center gap-4 ps-1 my-1">
+        <li class="d-flex align-items-center" *ngFor="let link of navLinks">
+          <mat-icon
+            class="link-icons dark-grey"
+            [class.active]="_router.isActive(link.path, true)"
+            >{{ link.icon }}</mat-icon
+          >
+          <a
+            class="nav-link dark-grey"
+            [routerLink]="link.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            >{{ link.label }}</a
+          >
+        </li>
+      </ul>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <div class="page-wrapper" [ngClass]="isAdminLogin ? '' : ''">
+    <router-outlet></router-outlet>
+  </div>
+</div>

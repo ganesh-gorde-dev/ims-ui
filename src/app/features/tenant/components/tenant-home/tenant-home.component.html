@@ -1,0 +1,55 @@
+<div class="container-fluid">
+  <div class="row d-flex justify-content-end align-items-center my-4">
+    <button mat-fab extended color="primary" (click)="onAddTenant()">
+      <mat-icon>add</mat-icon> Add Tenant
+    </button>
+  </div>
+  <app-tenant-list (emitEvent)="onEmitEvent($event)"></app-tenant-list>
+</div>
+
+<ng-template #addTenantDialog>
+  <h2 mat-dialog-title>{{ dialogData.isEdit ? 'Edit' : 'Add' }} Tenant</h2>
+  <mat-dialog-content>
+    <form [formGroup]="addTenantForm" class="d-flex flex-column gap-3 my-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Tenant Code</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Tenant Code"
+          formControlName="tenantCode" />
+        <mat-error> Tenant Code is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Tenant Name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Tenant Name"
+          formControlName="tenantName" />
+        <mat-error> Tenant Name is required </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!addTenantForm.valid"
+      [mat-dialog-close]="true">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #deleteTenantDialog>
+  <h2 mat-dialog-title>Delete Tenant</h2>
+  <mat-dialog-content>
+    Are you sure you want to delete tenant "{{ selectedTenant?.tenant_name }}"?
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="false">Cancel</button>
+    <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+  </mat-dialog-actions>
+</ng-template>
