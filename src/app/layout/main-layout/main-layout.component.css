@@ -50,6 +50,7 @@
   border-radius: 50%;
   border: 2px solid var(--mat-sys-primary);
   background-color: var(--mat-sys-surface);
+  box-shadow: none;
 }
 
 .home-button mat-icon {
@@ -60,6 +61,8 @@
   font-size: 16px;
   font-weight: 500;
   color: var(--mat-sys-outline);
+  display: flex;
+  align-items: center;
 }
 
 .nav-link.active,
