@@ -78,13 +78,11 @@
     </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button class="error-button" (click)="dialogRef.close()">
-      Cancel
-    </button>
+    <button mat-button [mat-dialog-close]="true">Cancel</button>
     <button
+      (click)="onTenantChange()"
       mat-button
       color="primary"
-      [mat-dialog-close]="true"
       [disabled]="!tenantCodeInput.valid">
       OK
     </button>

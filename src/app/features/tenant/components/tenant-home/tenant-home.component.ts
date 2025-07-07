@@ -40,7 +40,7 @@ export class TenantHomeComponent {
   @ViewChild(TenantListComponent) tenantListComponent!: TenantListComponent;
 
   addTenantForm!: FormGroup;
-  selectedTenant: Tenant | null = null;
+  selectedTenant!: Tenant;
   dialogData: DialogData = { isEdit: false };
 
   constructor(
@@ -70,33 +70,34 @@ export class TenantHomeComponent {
     this.addTenantForm.reset();
     this.addTenantForm.markAsUntouched();
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        if (this.addTenantForm.valid) {
-          const tenantData: TenantPayload = {
-            tenant_code: this.addTenantForm.value.tenantCode,
-            tenant_name: this.addTenantForm.value.tenantName,
-          };
+    dialogRef.afterClosed().subscribe(async result => {});
+  }
 
-          if (this.dialogData.isEdit && this.dialogData.tenant) {
-            // Update existing tenant
-            await this._apiService.put(
-              `tenant/${this.dialogData.tenant.tenant_id}`,
-              tenantData
-            );
-            this.addTenantForm.reset();
-            this._dialog.closeAll();
-            this.tenantListComponent.loadTenants();
-          } else {
-            // Add new tenant
-            await this._apiService.post('tenant', tenantData);
-            this.addTenantForm.reset();
-            this._dialog.closeAll();
-            this.tenantListComponent.loadTenants();
-          }
-        }
-      }
-    });
+  async onAddTenantSave() {
+    this.addTenantForm.markAllAsTouched();
+    if (this.addTenantForm.valid) {
+      const tenantData: TenantPayload = {
+        tenant_code: this.addTenantForm.value.tenantCode,
+        tenant_name: this.addTenantForm.value.tenantName,
+      };
+
+      // if (this.dialogData.isEdit && this.dialogData.tenant) {
+      //   // Update existing tenant
+      //   await this._apiService.put(
+      //     `tenant/${this.dialogData.tenant.tenant_id}`,
+      //     tenantData
+      //   );
+      //   this.addTenantForm.reset();
+      //   this._dialog.closeAll();
+      //   this.tenantListComponent.loadTenants();
+      // } else {
+      // Add new tenant
+      await this._apiService.post('tenant', tenantData);
+      this.addTenantForm.reset();
+      this._dialog.closeAll();
+      this.tenantListComponent.loadTenants();
+      // }
+    }
   }
 
   handleEditTenant(tenant: Tenant) {
@@ -112,26 +113,25 @@ export class TenantHomeComponent {
       data: this.dialogData,
       id: 'addTenantDialog',
     });
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        if (this.addTenantForm.valid) {
-          const tenantData: TenantPayload = {
-            tenant_code: this.addTenantForm.value.tenantCode,
-            tenant_name: this.addTenantForm.value.tenantName,
-          };
+  async onEditTenant() {
+    this.addTenantForm.markAllAsTouched();
+    if (this.addTenantForm.valid) {
+      const tenantData: TenantPayload = {
+        tenant_code: this.addTenantForm.value.tenantCode,
+        tenant_name: this.addTenantForm.value.tenantName,
+      };
 
-          // Update existing tenant
-          await this._apiService.put<Tenant>(
-            `tenant/${this.dialogData.tenant!.tenant_id}`,
-            tenantData
-          );
-          this.addTenantForm.reset();
-          this._dialog.closeAll();
-          this.tenantListComponent.loadTenants();
-        }
-      }
-    });
+      // Update existing tenant
+      await this._apiService.put<Tenant>(
+        `tenant/${this.dialogData.tenant!.tenant_id}`,
+        tenantData
+      );
+      this.addTenantForm.reset();
+      this._dialog.closeAll();
+      this.tenantListComponent.loadTenants();
+    }
   }
 
   onSubmit() {}
@@ -159,17 +159,20 @@ export class TenantHomeComponent {
     const dialogRef = this._dialog.open(this.deleteTenantDialog, {
       width: '400px',
     });
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        await this._apiService.delete(`tenant/${tenant.tenant_id}`);
-        this.tenantListComponent.loadTenants();
-      }
-    });
+  async onDeleteTenant() {
+    await this._apiService.delete(`tenant/${this.selectedTenant.tenant_id}`);
+    this.onDialogClose();
+    this.tenantListComponent.loadTenants();
   }
 
   handleViewTenant(tenant: Tenant) {
     // Logic to handle view action
     this._router.navigate(['home/tenant', tenant.tenant_id]);
+  }
+
+  onDialogClose() {
+    this._dialog.closeAll();
   }
 }

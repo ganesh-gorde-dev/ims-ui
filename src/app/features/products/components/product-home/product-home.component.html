@@ -63,12 +63,12 @@
     </form>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button [mat-dialog-close]="false" color="warn">Cancel</button>
+    <button mat-button [mat-dialog-close]="true" color="warn">Cancel</button>
     <button
       mat-button
       color="primary"
       [disabled]="!addProductForm.valid"
-      [mat-dialog-close]="true">
+      (click)="dialogData.isEdit ? onEditProduct() : onAddProductSave()">
       Save
     </button>
   </mat-dialog-actions>
@@ -82,7 +82,7 @@
     }}"?
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button [mat-dialog-close]="false">Cancel</button>
-    <button mat-button color="warn" [mat-dialog-close]="true">Delete</button>
+    <button mat-button [mat-dialog-close]="true">Cancel</button>
+    <button mat-button color="warn" (click)="onDeleteProduct()">Delete</button>
   </mat-dialog-actions>
 </ng-template>
