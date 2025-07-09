@@ -1,5 +1,4 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MasterData } from '../models/mater-data.model';
 
 @Pipe({ name: 'label' })
 export class LabelPipe implements PipeTransform {

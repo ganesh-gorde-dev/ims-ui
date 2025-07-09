@@ -13,3 +13,10 @@ export enum LOGIN_TYPE {
   ADMIN = 'ADMIN',
   TENANT = 'TENANT',
 }
+
+export enum PERMISSION_MODULE {
+  USER = 'User',
+  PRODUCT = 'Product',
+  CATEGORY = 'Category',
+  TENANT = 'Tenant',
+}

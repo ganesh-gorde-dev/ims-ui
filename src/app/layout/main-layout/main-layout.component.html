@@ -39,18 +39,18 @@
     <mat-toolbar-row class="navigation-links" *ngIf="!isAdminLogin">
       <ul class="d-flex align-items-center gap-4 ps-1 my-1">
         <li class="d-flex align-items-center" *ngFor="let link of navLinks">
-          <mat-icon
-            class="link-icons dark-grey"
-            [class.active]="_router.isActive(link.path, true)"
-            >{{ link.icon }}</mat-icon
-          >
           <a
             class="nav-link dark-grey"
             [routerLink]="link.path"
             routerLinkActive="active"
-            [routerLinkActiveOptions]="{ exact: true }"
-            >{{ link.label }}</a
-          >
+            [routerLinkActiveOptions]="{ exact: true }">
+            <mat-icon
+              class="link-icons dark-grey"
+              [class.active]="_router.isActive(link.path, true)"
+              >{{ link.icon }}</mat-icon
+            >
+            {{ link.label }}
+          </a>
         </li>
       </ul>
     </mat-toolbar-row>

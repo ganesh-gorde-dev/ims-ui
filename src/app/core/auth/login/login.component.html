@@ -71,7 +71,7 @@
       <mat-form-field>
         <mat-label>Tenant Code</mat-label>
         <input
-          (keyup.enter)="dialogRef.close(tenantCodeInput.value)"
+          (keyup.enter)="onTenantChange()"
           matInput
           [formControl]="tenantCodeInput" />
       </mat-form-field>

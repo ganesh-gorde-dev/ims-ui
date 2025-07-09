@@ -169,7 +169,7 @@ export class TenantHomeComponent {
 
   handleViewTenant(tenant: Tenant) {
     // Logic to handle view action
-    this._router.navigate(['home/tenant', tenant.tenant_id]);
+    this._router.navigate(['/admin/tenants', tenant.tenant_id]);
   }
 
   onDialogClose() {
