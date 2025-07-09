@@ -256,26 +256,27 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
     const dialogRef = this._dialog.open(this.addUserDialog, {
       width: '800px',
     });
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        // Logic to handle form submission
-        const formValue = this.userForm.value;
-        const payload = {
-          email: formValue.email,
-          phone_number: formValue.phone_number,
-          role_id: formValue.role_id,
-          last_name: formValue.last_name,
-          first_name: formValue.first_name,
-          password: formValue.password,
-          tenant_id: this.tenantData.tenant_id,
-        };
+  async onAddUserSave() {
+    this.userForm.markAllAsTouched();
+    if (this.userForm.valid) {
+      // Logic to handle form submission
+      const formValue = this.userForm.value;
+      const payload = {
+        email: formValue.email,
+        phone_number: formValue.phone_number,
+        role_id: formValue.role_id,
+        last_name: formValue.last_name,
+        first_name: formValue.first_name,
+        password: formValue.password,
+        tenant_id: this.tenantData.tenant_id,
+      };
 
-        await this._apiService.post<User>(`user/company-admin`, payload);
-
-        this.userListComponent.loadUsers();
-      }
-    });
+      await this._apiService.post<User>(`user/company-admin`, payload);
+      this._dialog.closeAll();
+      this.userListComponent.loadUsers();
+    }
   }
 
   onAddConfiguration() {
@@ -297,35 +298,37 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
         database_name: this.tenantConfiguration?.database_config,
       });
     }
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        // Logic to handle form submission
-        const formValue = this.configurationForm.value;
-        const configurationData: TenantConfiguration = {
-          database_strategy: formValue.databaseStrategy,
-          authentication_type: formValue.authenticationType,
-          database_server: formValue.databaseServer,
-          database_config:
-            formValue.databaseServer === 'POSTGRES'
-              ? {
-                  username: formValue.username,
-                  password: formValue.password,
-                  host: formValue.host,
-                  port: formValue.port,
-                  options: formValue.options,
-                  database_name: formValue.database_name,
-                }
-              : undefined,
-        };
-        await this._apiService.post<TenantConfiguration>(
-          `tenant/${this.tenantData.tenant_id}/configuration`,
-          configurationData
-        );
+  async onAddConfigurationSave() {
+    this.configurationForm.markAllAsTouched();
+    if (this.configurationForm.valid) {
+      // Logic to handle form submission
+      const formValue = this.configurationForm.value;
+      const configurationData: TenantConfiguration = {
+        database_strategy: formValue.databaseStrategy,
+        authentication_type: formValue.authenticationType,
+        database_server: formValue.databaseServer,
+        database_config:
+          formValue.databaseServer === 'POSTGRES'
+            ? {
+                username: formValue.username,
+                password: formValue.password,
+                host: formValue.host,
+                port: formValue.port,
+                options: formValue.options,
+                database_name: formValue.database_name,
+              }
+            : undefined,
+      };
+      await this._apiService.post<TenantConfiguration>(
+        `tenant/${this.tenantData.tenant_id}/configuration`,
+        configurationData
+      );
 
-        this.getTenantConfiguration();
-      }
-    });
+      this._dialog.closeAll();
+      this.getTenantConfiguration();
+    }
   }
 
   async onAddPermission() {

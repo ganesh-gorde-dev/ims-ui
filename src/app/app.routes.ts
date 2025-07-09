@@ -21,6 +21,7 @@ export const routes: Routes = [
           import('./features/products/product.routes').then(
             m => m.PRODUCT_ROUTES
           ),
+        resolve: { masterData: ResolverService },
         data: { title: 'Product' },
       },
       {
@@ -29,6 +30,7 @@ export const routes: Routes = [
           import('./features/category/category.routes').then(
             m => m.CATEGORY_ROUTES
           ),
+        resolve: { masterData: ResolverService },
         data: { title: 'Category' },
       },
     ],

@@ -21,6 +21,9 @@ export class ResolverService implements Resolve<any> {
   }
 
   fetchMasterData() {
-    return this._apiService.get('choices');
+    return [
+      this._apiService.get('choices'),
+      this._apiService.get('user/profile'),
+    ];
   }
 }
