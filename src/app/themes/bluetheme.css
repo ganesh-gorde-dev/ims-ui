@@ -35,11 +35,11 @@
   --mat-sys-on-tertiary-fixed-variant: light-dark(#6b2b7a, #6b2b7a);
 
   /* Neutral palette variables */
-  --mat-sys-background: light-dark(#f9f9ff, #111319);
+  --mat-sys-background: light-dark(#f5f5ff, #111319);
   --mat-sys-on-background: light-dark(#191c21, #e1e2e9);
-  --mat-sys-surface: light-dark(#f9f9ff, #111319);
+  --mat-sys-surface: light-dark(#f5f5ff, #111319);
   --mat-sys-surface-dim: light-dark(#d9d9e1, #111319);
-  --mat-sys-surface-bright: light-dark(#f9f9ff, #37393f);
+  --mat-sys-surface-bright: light-dark(#f5f5ff, #37393f);
   --mat-sys-surface-container-low: light-dark(#f3f3fb, #191c21);
   --mat-sys-surface-container-lowest: light-dark(#ffffff, #0c0e13);
   --mat-sys-surface-container: light-dark(#ededf5, #1d2025);

@@ -45,4 +45,8 @@ export class TenantConfigService {
   get fullApiUrl(): string {
     return `${this.apiHost}/${this.basePath}/`;
   }
+
+  isAdmin() {
+    return this.config.sub_domain === '';
+  }
 }

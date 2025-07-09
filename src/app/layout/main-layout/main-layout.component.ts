@@ -18,6 +18,7 @@ import { ApiService } from '../../core/services/api-interface.service';
 import { SpinnerService } from '../../core/services/spinner.service';
 import { Subject, filter, map, mergeMap, takeUntil } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
+import { TenantConfigService } from '../../core/services/tenant-config.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -44,12 +45,12 @@ export class MainLayoutComponent implements OnDestroy {
   navLinks = [
     {
       label: 'Product',
-      path: '/home/product',
+      path: '/tenant/product',
       icon: 'shopping_cart',
     },
     {
       label: 'Category',
-      path: '/home/category',
+      path: '/tenant/category',
       icon: 'category',
     },
   ];
@@ -59,7 +60,8 @@ export class MainLayoutComponent implements OnDestroy {
     public _router: Router,
     private _apiService: ApiService,
     private _route: ActivatedRoute,
-    private _spinnerService: SpinnerService
+    private _spinnerService: SpinnerService,
+    private _tenantConfigService: TenantConfigService
   ) {
     this._router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -88,7 +90,9 @@ export class MainLayoutComponent implements OnDestroy {
   }
 
   redirectToPage() {
-    this._router.navigate(['/home/tenant']);
+    this._tenantConfigService.isAdmin()
+      ? this._router.navigate(['/admin/tenants'])
+      : this._router.navigate(['/tenant/product']);
   }
 
   async logout() {

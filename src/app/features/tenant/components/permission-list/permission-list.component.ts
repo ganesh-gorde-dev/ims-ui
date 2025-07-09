@@ -7,7 +7,6 @@ import {
 } from '../../models/tenant.model';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { ActivatedRoute } from '@angular/router';
-import { MasterData } from '../../../../shared/models/mater-data.model';
 
 @Component({
   selector: 'app-permission-list',

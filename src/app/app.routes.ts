@@ -2,27 +2,36 @@ import { Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { ResolverService } from './core/services/resolver.service';
+import { PermissionGuard } from './core/guard/permission-guard';
+import { PERMISSION_MODULE } from './shared/constant/db.constants';
 
 export const routes: Routes = [
   {
-    path: 'home',
+    path: 'admin',
     component: MainLayoutComponent,
+    resolve: { masterData: ResolverService },
     children: [
       {
-        path: 'tenant',
+        path: 'tenants',
         loadChildren: () =>
           import('./features/tenant/tenant.routes').then(m => m.TENANT_ROUTES),
-        resolve: { masterData: ResolverService },
         data: { title: 'Tenant' },
       },
+    ],
+  },
+  {
+    path: 'tenant',
+    component: MainLayoutComponent,
+    resolve: { masterData: ResolverService },
+    children: [
       {
         path: 'product',
         loadChildren: () =>
           import('./features/products/product.routes').then(
             m => m.PRODUCT_ROUTES
           ),
-        resolve: { masterData: ResolverService },
-        data: { title: 'Product' },
+        data: { title: 'Product', permission: PERMISSION_MODULE.PRODUCT },
+        canActivate: [PermissionGuard],
       },
       {
         path: 'category',
@@ -30,8 +39,8 @@ export const routes: Routes = [
           import('./features/category/category.routes').then(
             m => m.CATEGORY_ROUTES
           ),
-        resolve: { masterData: ResolverService },
-        data: { title: 'Category' },
+        data: { title: 'Category', permission: PERMISSION_MODULE.CATEGORY },
+        canActivate: [PermissionGuard],
       },
     ],
   },

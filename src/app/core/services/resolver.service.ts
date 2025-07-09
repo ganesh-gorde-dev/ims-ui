@@ -4,14 +4,22 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ApiService } from './api-interface.service';
+import { forkJoin } from 'rxjs';
+import { MasterData, UserProfile } from '../../shared/models/global.model';
+import { TenantConfigService } from './tenant-config.service';
+import { PermissionService } from './permission.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ResolverService implements Resolve<any> {
-  constructor(private _apiService: ApiService) {}
+  constructor(
+    private _apiService: ApiService,
+    private tenantConfigService: TenantConfigService,
+    private _permissionService: PermissionService
+  ) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -21,9 +29,14 @@ export class ResolverService implements Resolve<any> {
   }
 
   fetchMasterData() {
-    return [
-      this._apiService.get('choices'),
-      this._apiService.get('user/profile'),
-    ];
+    // If get() returns Observables, use forkJoin to aggregate them
+    // If get() returns Promises, use Promise.all instead
+    // Here, assuming get() returns Observables:
+    return forkJoin({
+      choices: this._apiService.get<MasterData[]>('choices'),
+      userProfile: this.tenantConfigService.isAdmin()
+        ? of(null)
+        : this._apiService.get<UserProfile>('user/profile'),
+    });
   }
 }

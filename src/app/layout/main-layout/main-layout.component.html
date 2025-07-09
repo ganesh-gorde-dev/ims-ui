@@ -17,9 +17,9 @@
       <!-- <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
         <mat-icon>dark_mode</mat-icon>
       </button> -->
-      <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+      <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
         <mat-icon>format_color_fill</mat-icon>
-      </button>
+      </button> -->
       <mat-menu #themeMenu="matMenu">
         @for(theme of _themeService.getThemes(); track theme.id) {
         <button mat-menu-item (click)="_themeService.setTheme(theme.id)">

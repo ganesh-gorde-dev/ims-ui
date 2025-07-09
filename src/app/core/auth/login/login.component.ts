@@ -32,6 +32,8 @@ import { TenantConfigService } from '../../services/tenant-config.service';
 import { Environment } from '../../../../environments/environment.model';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Permission } from '../../../shared/models/global.model';
+import { PermissionService } from '../../services/permission.service';
 
 @Component({
   selector: 'app-login',
@@ -63,7 +65,8 @@ export class LoginComponent implements OnInit {
     private _spinnerService: SpinnerService,
     private _router: Router,
     private _tenantConfigService: TenantConfigService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _permissionService: PermissionService
   ) {
     // Initialization logic can go here
     const subdomain = window.location.hostname.split('.')[0];
@@ -139,16 +142,16 @@ export class LoginComponent implements OnInit {
       );
 
       localStorage.setItem('authToken', login.token);
-      this._router.navigate(['/home/tenant']);
+      this._router.navigate(['/admin/tenants']);
     } else {
       //  Change subdomain
       const login: LoginResponse = await this._apiService.post<LoginResponse>(
         'auth/login',
         loginPayload
       );
-
       localStorage.setItem('authToken', login.token);
-      this._router.navigate(['/home/product']);
+      await this._permissionService.init();
+      this._router.navigate(['/tenant/product']);
     }
   }
 

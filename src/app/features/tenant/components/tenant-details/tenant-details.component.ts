@@ -1,10 +1,8 @@
 import {
-  Permission,
   TenantConfiguration,
   TenantDetails,
   User,
 } from './../../models/tenant.model';
-import { ApiResponse } from './../../../../core/services/api-interface.service';
 import {
   AfterViewInit,
   Component,
@@ -21,23 +19,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { SpinnerService } from '../../../../core/services/spinner.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { MasterData } from '../../../../shared/models/mater-data.model';
+import { MasterData } from '../../../../shared/models/global.model';
 import { MASTER_DATA } from '../../../../shared/constant/db.constants';
-import { LabelPipe } from '../../../../shared/pipes/label.pipe';
 import { SharedModule } from '../../../../shared/shared.module';
 import { PermissionListComponent } from '../permission-list/permission-list.component';
 import { UserListComponent } from '../user-list/user-list.component';
-import { TenantListComponent } from '../tenant-list/tenant-list.component';
 
 @Component({
   selector: 'app-tenant-details',
@@ -67,11 +61,14 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private _apiService: ApiService,
     private _fb: FormBuilder,
-    private _spinnerService: SpinnerService,
     private _dialog: MatDialog
   ) {
     this.tenantData = this.route.snapshot.data['tenantDetails'];
-    this.masterData = this.route.snapshot.data['masterData'];
+    const parentRouteWithData = this.route.pathFromRoot.find(
+      r => r.snapshot.data['masterData']
+    );
+
+    this.masterData = parentRouteWithData?.snapshot.data['masterData'].choices;
     this.arrDatabaseStrategyTypes =
       this.masterData[MASTER_DATA.DATABASE_STRATEGY_TYPES];
     this.arrAuthenticationTypes =
