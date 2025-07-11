@@ -14,6 +14,8 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { apiInterceptor } from './core/interceptors/api-interceptor';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { TenantConfigService } from './core/services/tenant-config.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,6 +33,18 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
+    },
+    {
+      provide: APP_INITIALIZER,
+      multi: true,
+      useFactory: () => {
+        const iconRegistry = inject(MatIconRegistry);
+        const sanitizer = inject(DomSanitizer);
+        return () => {
+          iconRegistry.registerFontClassAlias('material-symbols-outlined');
+          iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+        };
+      },
     },
   ],
 };
