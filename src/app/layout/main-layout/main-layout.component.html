@@ -32,9 +32,38 @@
         </button>
         }
       </mat-menu>
-      <button mat-icon-button aria-label="Logout" (click)="logout()">
-        <mat-icon class="danger">power_settings_new</mat-icon>
+      <button mat-icon-button [matMenuTriggerFor]="notifMenu">
+        <mat-icon>notifications</mat-icon>
+        <span *ngIf="notifications.length > 0" class="badge">{{
+          notifications.length
+        }}</span>
       </button>
+
+      <mat-menu #notifMenu="matMenu" class="notif-menu">
+        <ng-container *ngIf="notifications.length > 0; else noNotif">
+          <button mat-menu-item *ngFor="let notif of notifications">
+            <div class="notif-title">{{ notif.notification.title }}</div>
+            <div class="notif-message">{{ notif.notification.message }}</div>
+          </button>
+        </ng-container>
+        <ng-template #noNotif>
+          <button mat-menu-item>No new notifications</button>
+        </ng-template>
+      </mat-menu>
+
+      <button mat-icon-button [matMenuTriggerFor]="userMenu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <!-- <button mat-menu-item routerLink="/profile">Profile</button> -->
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>power_settings_new</mat-icon>Logout
+        </button>
+      </mat-menu>
+
+      <!-- <button mat-icon-button aria-label="Logout" (click)="logout()">
+        <mat-icon class="danger">power_settings_new</mat-icon>
+      </button> -->
     </mat-toolbar-row>
     <mat-toolbar-row class="navigation-links" *ngIf="!isAdminLogin">
       <ul class="d-flex align-items-center gap-4 ps-1 my-1">

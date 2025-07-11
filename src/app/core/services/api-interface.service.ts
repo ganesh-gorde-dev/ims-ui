@@ -95,6 +95,27 @@ export class ApiService {
     }
   }
 
+  async patch<T>(url: string, data: any, spinner: boolean = true): Promise<T> {
+    if (spinner) this._spinnerService.show();
+
+    try {
+      const response = await firstValueFrom(
+        this.http.patch<ApiResponse<T>>(
+          this._configService.fullApiUrl + url,
+          data,
+          {
+            headers: this.getHeaders(),
+          }
+        )
+      );
+      return response.data;
+    } catch (error) {
+      throw error;
+    } finally {
+      if (spinner) this._spinnerService.hide();
+    }
+  }
+
   async delete<T>(url: string, spinner: boolean = true): Promise<null> {
     if (spinner) this._spinnerService.show();
 

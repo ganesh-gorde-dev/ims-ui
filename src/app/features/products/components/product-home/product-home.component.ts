@@ -133,6 +133,7 @@ export class ProductHomeComponent {
 
   async onDeleteProduct() {
     await this._apiService.delete(`product/${this.selectedProduct.product_id}`);
+    this._dialog.closeAll();
     this.productListComponent.loadProducts();
   }
 

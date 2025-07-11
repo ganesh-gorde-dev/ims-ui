@@ -16,9 +16,11 @@ import { MatMenuModule } from '@angular/material/menu';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api-interface.service';
 import { SpinnerService } from '../../core/services/spinner.service';
-import { Subject, filter, map, mergeMap, takeUntil } from 'rxjs';
+import { Subject, Subscription, filter, map, mergeMap, takeUntil } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { TenantConfigService } from '../../core/services/tenant-config.service';
+import { NotificationItem } from '../../shared/models/global.model';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -38,7 +40,7 @@ import { TenantConfigService } from '../../core/services/tenant-config.service';
   styleUrl: './main-layout.component.css',
   standalone: true,
 })
-export class MainLayoutComponent implements OnDestroy {
+export class MainLayoutComponent implements OnInit, OnDestroy {
   title = '';
   private destroy$ = new Subject<void>();
   isAdminLogin = true;
@@ -53,7 +55,16 @@ export class MainLayoutComponent implements OnDestroy {
       path: '/tenant/category',
       icon: 'category',
     },
+    {
+      label: 'User Management',
+      path: '/tenant/user-management',
+      icon: 'category',
+    },
   ];
+
+  notifications: NotificationItem[] = [];
+  unreadCount = 0;
+  private sub!: Subscription;
 
   constructor(
     public _themeService: ThemeService,
@@ -61,7 +72,8 @@ export class MainLayoutComponent implements OnDestroy {
     private _apiService: ApiService,
     private _route: ActivatedRoute,
     private _spinnerService: SpinnerService,
-    private _tenantConfigService: TenantConfigService
+    private _tenantConfigService: TenantConfigService,
+    private _notificationService: NotificationService
   ) {
     this._router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -77,6 +89,27 @@ export class MainLayoutComponent implements OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    const notifications: any = this._notificationService.getNotifications();
+
+    this.notifications = notifications;
+
+    this.sub = this._notificationService.notifications$.subscribe(latest => {
+      this.notifications = latest;
+    });
+  }
+
+  async onNotificationClick(notif: NotificationItem): Promise<void> {
+    await this._notificationService.markAsRead(
+      notif.notification.notification_id
+    );
+    // Example: navigate to stock detail
+    if (notif.notification.notification_type === 'STOCK_IN') {
+      const stockId = notif.notification.notification_data?.stock_id;
+      this._router.navigate(['/stock/detail', stockId]);
+    }
+  }
+
   private getDeepestChild(route: ActivatedRoute): ActivatedRoute {
     while (route.firstChild) {
       route = route.firstChild;
@@ -87,6 +120,8 @@ export class MainLayoutComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+    this.sub?.unsubscribe();
+    this._notificationService.disconnectSocket();
   }
 
   redirectToPage() {

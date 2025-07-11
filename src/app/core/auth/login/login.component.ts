@@ -144,7 +144,6 @@ export class LoginComponent implements OnInit {
       localStorage.setItem('authToken', login.token);
       this._router.navigate(['/admin/tenants']);
     } else {
-      //  Change subdomain
       const login: LoginResponse = await this._apiService.post<LoginResponse>(
         'auth/login',
         loginPayload
