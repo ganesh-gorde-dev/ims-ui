@@ -150,7 +150,6 @@ export class LoginComponent implements OnInit {
         loginPayload
       );
       localStorage.setItem('authToken', login.token);
-      await this._permissionService.init();
       this._router.navigate(['/tenant/product']);
     }
   }

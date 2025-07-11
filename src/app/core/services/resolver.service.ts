@@ -32,6 +32,8 @@ export class ResolverService implements Resolve<any> {
     // If get() returns Observables, use forkJoin to aggregate them
     // If get() returns Promises, use Promise.all instead
     // Here, assuming get() returns Observables:
+    this._permissionService.init();
+
     return forkJoin({
       choices: this._apiService.get<MasterData[]>('choices'),
       userProfile: this.tenantConfigService.isAdmin()
