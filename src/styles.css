@@ -55,3 +55,40 @@ body {
 .mat-mdc-tab-body-content {
   padding: 10px;
 }
+
+.custom-table {
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--mat-sys-on-secondary);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 10px;
+}
+
+.custom-table th {
+  color: var(--mat-sys-on-surface);
+  background-color: var(--mat-sys-surface-container-high) !important;
+  font-size: 13px;
+  padding: 12px 16px;
+  text-align: left;
+}
+
+.custom-table td {
+  color: var(--mat-sys-outline);
+  font-size: 14px;
+  padding: 12px 16px;
+  vertical-align: middle;
+  border-bottom: 1px solid #eeeeee; /* 💡 Light row border */
+}
+
+/* Optional: Remove last row border */
+.custom-table tr:last-child td {
+  border-bottom: none;
+}
+
+.mat-mdc-paginator {
+  border-radius: 12px;
+}

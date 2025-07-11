@@ -56,6 +56,8 @@ export class TenantHomeComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addTenantDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.addTenantForm.reset();
@@ -103,6 +105,8 @@ export class TenantHomeComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addTenantDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -149,6 +153,9 @@ export class TenantHomeComponent {
     this.selectedTenant = tenant;
     const dialogRef = this._dialog.open(this.deleteTenantDialog, {
       width: '400px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'deleteTenantDialog',
     });
   }
 

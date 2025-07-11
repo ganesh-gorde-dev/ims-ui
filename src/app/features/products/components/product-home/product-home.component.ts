@@ -71,6 +71,8 @@ export class ProductHomeComponent {
     const dialogRef = this._dialog.open(this.addProductDialog, {
       width: '600px',
       id: 'addProductDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.addProductForm.reset();
@@ -156,6 +158,8 @@ export class ProductHomeComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addTenantDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -165,6 +169,9 @@ export class ProductHomeComponent {
     this.selectedProduct = product;
     const dialogRef = this._dialog.open(this.deleteProductDialog, {
       width: '400px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'deleteProductDialog',
     });
   }
 }

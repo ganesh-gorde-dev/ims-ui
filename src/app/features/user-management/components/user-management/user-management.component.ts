@@ -77,6 +77,8 @@ export class UserManagementComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.userForm.reset();
@@ -132,6 +134,8 @@ export class UserManagementComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -141,6 +145,9 @@ export class UserManagementComponent {
     this.selectedUser = user;
     const dialogRef = this._dialog.open(this.deleteUserDialog, {
       width: '400px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'deleteUserDialog',
     });
   }
 

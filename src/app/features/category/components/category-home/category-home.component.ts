@@ -1,3 +1,4 @@
+import { Category } from './../../models/category.model';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { CategoryListComponent } from '../category-list/category-list.component';
 import { CommonModule } from '@angular/common';
@@ -28,6 +29,7 @@ export class CategoryHomeComponent {
   categoryListComponent!: CategoryListComponent;
 
   @ViewChild('addCategoryDialog') addCategoryDialog!: TemplateRef<any>;
+  @ViewChild('deleteCategoryDialog') deleteCategoryDialog!: TemplateRef<any>;
 
   addCategoryForm!: FormGroup;
 
@@ -50,30 +52,97 @@ export class CategoryHomeComponent {
     const dialogRef = this._dialog.open(this.addCategoryDialog, {
       width: '600px',
       id: 'addCategoryDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.addCategoryForm.reset();
     this.addCategoryForm.markAsUntouched();
+  }
 
-    dialogRef.afterClosed().subscribe(async result => {
-      if (result) {
-        if (this.addCategoryForm.valid) {
-          const formValues = this.addCategoryForm.value;
+  onEmitEvent(event: any) {
+    switch (event.action) {
+      case 'edit':
+        this.handleEditCategory(event.category);
+        break;
+      case 'delete':
+        this.handleDeleteCategory(event.category);
+        break;
+      default:
+        console.warn('Unknown event action:', event.action);
+    }
+  }
 
-          const CategoryPayload: CategoryPayload = {
-            category_code: formValues.categoryCode,
-            category_name: formValues.categoryName,
-          };
+  dialogData: any;
+  handleEditCategory(category: Category) {
+    this.dialogData = { isEdit: true, category };
+    // Logic to handle edit action
+    this.addCategoryForm.patchValue({
+      categoryCode: category.category_code,
+      categoryName: category.category_name,
+    });
 
-          // Update existing tenant
-          await this._apiService.post(`category`, CategoryPayload);
-          this.addCategoryForm.reset();
-          this._dialog.closeAll();
-          this.categoryListComponent.loadCategories();
-        }
-      }
+    this._dialog.open(this.addCategoryDialog, {
+      width: '600px',
+      id: 'addCategoryDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
-  onEmitEvent(event: any) {}
+  selectedCategory: Category | null = null;
+
+  handleDeleteCategory(category: Category) {
+    // Logic to handle delete action
+    this.selectedCategory = category;
+    this._dialog.open(this.deleteCategoryDialog, {
+      width: '400px',
+      id: 'deleteCategoryDialog',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  async onAddCategorySave() {
+    this.addCategoryForm.markAllAsTouched();
+    if (this.addCategoryForm.valid) {
+      const formValues = this.addCategoryForm.value;
+
+      const CategoryPayload: CategoryPayload = {
+        category_code: formValues.categoryCode,
+        category_name: formValues.categoryName,
+      };
+
+      // Update existing tenant
+      await this._apiService.post(`category`, CategoryPayload);
+      this.addCategoryForm.reset();
+      this._dialog.closeAll();
+      this.categoryListComponent.loadCategories();
+    }
+  }
+
+  async onEditCategory() {
+    this.addCategoryForm.markAllAsTouched();
+    if (this.addCategoryForm.valid) {
+      const formValues = this.addCategoryForm.value;
+      const CategoryPayload: CategoryPayload = {
+        category_code: formValues.categoryCode,
+        category_name: formValues.categoryName,
+      };
+
+      // Update existing tenant
+      await this._apiService.post(`category`, CategoryPayload);
+      this.addCategoryForm.reset();
+      this._dialog.closeAll();
+      this.categoryListComponent.loadCategories();
+    }
+  }
+
+  async onDeleteCategory() {
+    await this._apiService.delete(
+      `category/${this.selectedCategory!.category_id}`
+    );
+    this._dialog.closeAll();
+    this.categoryListComponent.loadCategories();
+  }
 }

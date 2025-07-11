@@ -92,7 +92,8 @@ export class LoginComponent implements OnInit {
     // Provide dialog to add tenant code
     const dialogRef = this._dialog.open(this.tenantCodeDialog, {
       width: '350px',
-      disableClose: true,
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
