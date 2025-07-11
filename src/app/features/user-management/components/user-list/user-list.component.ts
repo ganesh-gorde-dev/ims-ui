@@ -1,18 +1,15 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../../../core/services/api-interface.service';
-import { Tenant, User, UserResponse } from '../../models/tenant.model';
+import {
+  User,
+  Tenant,
+  UserResponse,
+} from '../../../tenant/models/tenant.model';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-user-list',
@@ -20,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })
-export class UserListComponent implements OnInit, AfterViewInit {
+export class UserListComponent {
   displayedColumns: string[] = [
     'name',
     'email',
@@ -56,18 +53,9 @@ export class UserListComponent implements OnInit, AfterViewInit {
   }
 
   async loadUsers(pageNumber: number = 1, pageSize: number = this.pageSize) {
-    const tenantData = await this._apiService.get<UserResponse>(
-      'user/company-admin',
-      {
-        ispagination: true,
-        page: pageNumber,
-        pagesize: pageSize,
-        tenant_id: this.tenantData.tenant_id,
-      }
-    );
+    const tenantData = await this._apiService.get<UserResponse>('user');
 
     this.dataSource = new MatTableDataSource<User>(tenantData.list);
-    this.emitEvent.emit({ action: 'add_permission', value: false });
     this.totalCount = tenantData.pagination.count;
   }
 

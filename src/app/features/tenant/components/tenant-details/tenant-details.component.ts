@@ -249,7 +249,6 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
 
   onAddUser() {
     // Open a dialog or form to add user
-    this.initializeForm();
     const dialogRef = this._dialog.open(this.addUserDialog, {
       width: '800px',
     });

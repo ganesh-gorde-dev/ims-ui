@@ -42,6 +42,15 @@ export const routes: Routes = [
         data: { title: 'Category', permission: PERMISSION_MODULE.CATEGORY },
         canActivate: [PermissionGuard],
       },
+      {
+        path: 'user-management',
+        loadChildren: () =>
+          import('./features/user-management/user-management.routes').then(
+            m => m.USER_MANAGEMENT_ROUTE
+          ),
+        data: { title: 'Category', permission: PERMISSION_MODULE.USER },
+        canActivate: [PermissionGuard],
+      },
     ],
   },
   {

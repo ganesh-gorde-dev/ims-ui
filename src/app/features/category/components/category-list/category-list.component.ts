@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Category, CategoryResponse } from '../../models/category.model';
 import { ApiService } from '../../../../core/services/api-interface.service';
 
@@ -20,12 +20,12 @@ import { ApiService } from '../../../../core/services/api-interface.service';
 })
 export class CategoryListComponent implements OnInit {
   displayedColumns: string[] = ['category_name', 'category_code', 'actions'];
-  dataSource: Category[] = [];
+  dataSource = new MatTableDataSource<Category>();
   totalCount: number = 0;
   pageSize: number = 10;
   pageChangeSubscription: any;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @Output() emitEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _apiService: ApiService) {
@@ -33,24 +33,28 @@ export class CategoryListComponent implements OnInit {
     this.loadCategories();
   }
 
-  ngOnInit() {
-    this.pageChangeSubscription = this.paginator?.page.subscribe(pageEvent => {
-      this.pageSize = pageEvent.pageSize;
-      this.loadCategories();
-    });
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     // Any additional initialization logic can go here
     // Pagination setup can be done here if needed
+    this.dataSource.paginator = this.paginator;
+    this.pageChangeSubscription = this.paginator?.page.subscribe(pageEvent => {
+      this.pageSize = pageEvent.pageSize;
+      this.loadCategories(pageEvent.pageIndex + 1, pageEvent.pageSize);
+    });
   }
 
-  async loadCategories() {
+  async loadCategories(
+    pageNumber: number = 1,
+    pageSize: number = this.pageSize
+  ) {
     const categoryData = await this._apiService.get<CategoryResponse>(
-      'category'
+      'category',
+      { ispagination: true, page: pageNumber, pagesize: pageSize }
     );
 
-    this.dataSource = categoryData.list;
+    this.dataSource = new MatTableDataSource<Category>(categoryData.list);
     this.totalCount = categoryData.pagination.count;
   }
 
