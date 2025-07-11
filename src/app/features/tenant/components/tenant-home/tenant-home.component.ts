@@ -16,20 +16,11 @@ import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { DialogData, Tenant, TenantPayload } from '../../models/tenant.model';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-tenant-home',
-  imports: [
-    TenantListComponent,
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-  ],
+  imports: [TenantListComponent, SharedModule],
   templateUrl: './tenant-home.component.html',
   styleUrl: './tenant-home.component.css',
   standalone: true,

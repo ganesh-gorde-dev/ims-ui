@@ -20,22 +20,11 @@ import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogData, User } from '../../models/user-management.model';
 import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-user-management',
-  imports: [
-    UserListComponent,
-    CommonModule,
-    FormsModule,
-    MatIconModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatButtonModule,
-  ],
+  imports: [UserListComponent, SharedModule],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css',
 })

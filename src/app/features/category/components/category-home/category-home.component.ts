@@ -15,20 +15,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { CategoryPayload } from '../../models/category.model';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-category-home',
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    CategoryListComponent,
-  ],
+  imports: [SharedModule, CategoryListComponent],
   templateUrl: './category-home.component.html',
   styleUrl: './category-home.component.css',
 })

@@ -22,22 +22,11 @@ import {
 } from '../../../category/models/category.model';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-product-home',
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    ProductListComponent,
-    MatOptionModule,
-    MatSelectModule,
-  ],
+  imports: [SharedModule, ProductListComponent],
   templateUrl: './product-home.component.html',
   styleUrl: './product-home.component.css',
 })

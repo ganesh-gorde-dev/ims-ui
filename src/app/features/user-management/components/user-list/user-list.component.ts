@@ -10,10 +10,11 @@ import {
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-user-list',
-  imports: [MatTableModule, CommonModule, MatIconModule, MatPaginatorModule],
+  imports: [SharedModule],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
 })

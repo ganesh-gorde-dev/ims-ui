@@ -34,17 +34,18 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' },
     },
-    {
-      provide: APP_INITIALIZER,
-      multi: true,
-      useFactory: () => {
-        const iconRegistry = inject(MatIconRegistry);
-        const sanitizer = inject(DomSanitizer);
-        return () => {
-          iconRegistry.registerFontClassAlias('material-symbols-outlined');
-          iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
-        };
-      },
-    },
+    // {
+    //   provide: APP_INITIALIZER,
+    //   multi: true,
+    //   useFactory: () => {
+    //     const iconRegistry = inject(MatIconRegistry);
+    //     const sanitizer = inject(DomSanitizer);
+    //     return () => {
+    //       iconRegistry.registerFontClassAlias('material-symbols-outlined');
+    //       iconRegistry.registerFontClassAlias('material-icons');
+    //       iconRegistry.setDefaultFontSetClass('material-symbols-outlined');
+    //     };
+    //   },
+    // },
   ],
 };

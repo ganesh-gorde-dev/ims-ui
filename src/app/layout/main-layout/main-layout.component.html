@@ -73,10 +73,10 @@
             [routerLink]="link.path"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon
-              class="link-icons dark-grey"
+            <span
+              class="link-icons dark-grey material-symbols-outlined"
               [class.active]="_router.isActive(link.path, true)"
-              >{{ link.icon }}</mat-icon
+              >{{ link.icon }}</span
             >
             {{ link.label }}
           </a>

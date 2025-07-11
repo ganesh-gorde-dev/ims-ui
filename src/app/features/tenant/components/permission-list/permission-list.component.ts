@@ -7,10 +7,11 @@ import {
 } from '../../models/tenant.model';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { ActivatedRoute } from '@angular/router';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-permission-list',
-  imports: [MatTableModule],
+  imports: [SharedModule],
   templateUrl: './permission-list.component.html',
   styleUrl: './permission-list.component.css',
 })

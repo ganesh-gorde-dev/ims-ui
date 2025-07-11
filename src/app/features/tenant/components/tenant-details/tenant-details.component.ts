@@ -35,21 +35,7 @@ import { UserListComponent } from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-tenant-details',
-  imports: [
-    MatTabsModule,
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatSelectModule,
-    SharedModule,
-    PermissionListComponent,
-    UserListComponent,
-  ],
+  imports: [SharedModule, PermissionListComponent, UserListComponent],
   templateUrl: './tenant-details.component.html',
   styleUrl: './tenant-details.component.css',
 })
