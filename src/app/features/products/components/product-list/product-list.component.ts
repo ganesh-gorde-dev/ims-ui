@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ApiService } from '../../../../core/services/api-interface.service';
-import { MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 @Component({
   selector: 'app-product-list',
@@ -20,12 +20,12 @@ export class ProductListComponent {
     'purchase_price',
     'actions',
   ];
-  dataSource: Product[] = [];
+  dataSource = new MatTableDataSource<Product>();
   totalCount: number = 0;
   pageSize: number = 10;
   pageChangeSubscription: any;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @Output() emitEvent: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(private _apiService: ApiService) {
@@ -33,22 +33,26 @@ export class ProductListComponent {
     this.loadProducts();
   }
 
-  ngOnInit() {
-    this.pageChangeSubscription = this.paginator?.page.subscribe(pageEvent => {
-      this.pageSize = pageEvent.pageSize;
-      this.loadProducts();
-    });
-  }
+  ngOnInit() {}
 
   ngAfterViewInit(): void {
     // Any additional initialization logic can go here
     // Pagination setup can be done here if needed
+    this.dataSource.paginator = this.paginator;
+    this.pageChangeSubscription = this.paginator?.page.subscribe(pageEvent => {
+      this.pageSize = pageEvent.pageSize;
+      this.loadProducts(pageEvent.pageIndex + 1, pageEvent.pageSize);
+    });
   }
 
-  async loadProducts() {
-    const productData = await this._apiService.get<ProductResponse>('product');
+  async loadProducts(pageNumber: number = 1, pageSize: number = this.pageSize) {
+    const productData = await this._apiService.get<ProductResponse>('product', {
+      ispagination: true,
+      page: pageNumber,
+      pagesize: pageSize,
+    });
 
-    this.dataSource = productData.list;
+    this.dataSource = new MatTableDataSource<Product>(productData.list);
     this.totalCount = productData.pagination.count;
   }
 

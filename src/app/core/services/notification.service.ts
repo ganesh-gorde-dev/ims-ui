@@ -7,6 +7,7 @@ import {
   NotificationResponse,
 } from '../../shared/models/global.model';
 import { ApiService } from './api-interface.service';
+import { TenantConfigService } from './tenant-config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,10 +16,15 @@ export class NotificationService {
   private apiUrl = 'notification';
   private markAsReadUrl = 'notification';
   private socket$!: WebSocketSubject<any>;
+  private socketUrl = 'localhost/ws/notifications/';
   private notificationSubject = new BehaviorSubject<NotificationItem[]>([]);
   public notifications$ = this.notificationSubject.asObservable();
 
-  constructor(private http: HttpClient, private _apiService: ApiService) {
+  constructor(
+    private http: HttpClient,
+    private _apiService: ApiService,
+    private _configService: TenantConfigService
+  ) {
     this.connectToSocket();
   }
 
@@ -38,7 +44,7 @@ export class NotificationService {
   }
 
   private connectToSocket(): void {
-    this.socket$ = webSocket('wss://localhost/ws/notifications');
+    this.socket$ = webSocket(this.socketUrl);
 
     this.socket$.subscribe({
       next: (msg: any) => {

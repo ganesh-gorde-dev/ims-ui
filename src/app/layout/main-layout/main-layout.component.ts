@@ -58,7 +58,32 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     {
       label: 'User Management',
       path: '/tenant/user-management',
-      icon: 'category',
+      icon: 'group',
+    },
+    {
+      label: 'Stock',
+      path: '/tenant/stock',
+      icon: 'inventory_2',
+    },
+    {
+      label: 'Supplier',
+      path: '/tenant/supplier',
+      icon: 'delivery_truck_bolt',
+    },
+    {
+      label: 'Roles & Permission',
+      path: '/tenant/roles-permission',
+      icon: 'passkey',
+    },
+    {
+      label: 'Reports',
+      path: '/tenant/reports',
+      icon: 'finance_mode',
+    },
+    {
+      label: 'Audit Logs',
+      path: '/tenant/audit-logs',
+      icon: 'deployed_code_history',
     },
   ];
 
