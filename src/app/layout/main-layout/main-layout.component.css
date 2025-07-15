@@ -19,6 +19,26 @@
   margin-right: 16px;
 }
 
+.enterprise {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  gap: 8px;
+  color: var(---mat-sys-primary);
+}
+
+.enterprise mat-icon {
+  font-size: 24px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  background-color: var(--mat-sys-primary);
+  color: var(--mat-sys-background);
+}
+
 /* .nav-logo {
   width: 2.5rem; 
   height: 2.5rem;
@@ -98,6 +118,9 @@
 }
 
 .navbar-first {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 

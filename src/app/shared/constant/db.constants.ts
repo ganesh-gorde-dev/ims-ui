@@ -22,7 +22,7 @@ export enum PERMISSION_MODULE {
   ROLE_PERMISSION = 'Role Permission',
   STOCK = 'Stock',
   NOTIFICATION = 'Notification',
-  SUPPPLIER = 'Supplier',
+  SUPPLIER = 'Supplier',
   REPORT = 'Report Stock Summary',
   AUDIT_LOGS = 'Audit Logs',
 }

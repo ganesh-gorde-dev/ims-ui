@@ -1,0 +1,53 @@
+<div class="d-flex gap-3">
+  <mat-card
+    *ngFor="let user of users"
+    class="mb-4 shadow-sm rounded-3 p-4"
+    style="width: 320px; flex: 0 0 auto">
+    <div class="d-flex align-items-center mb-3">
+      <div
+        *ngIf="!user.profile_photo"
+        class="rounded-circle bg-primary text-white d-flex justify-content-center align-items-center me-3"
+        style="
+          width: 50px;
+          height: 50px;
+          font-weight: bold;
+          font-size: 1.2rem;
+          flex-shrink: 0;
+        ">
+        {{ getInitials(user) }}
+      </div>
+      <img
+        *ngIf="user.profile_photo"
+        [src]="user.profile_photo"
+        class="rounded-circle"
+        style="width: 50px; height: 50px"
+        alt="User Photo" />
+
+      <div style="min-width: 0">
+        <div class="fw-semibold fs-5 text-truncate">{{ user.full_name }}</div>
+        <div
+          class="text-muted small text-wrap d-flex gap-2"
+          style="word-break: break-word">
+          <mat-icon>email</mat-icon>{{ user.email }}
+        </div>
+        <div class="text-muted small d-flex align-items-center gap-2">
+          <mat-icon>phone</mat-icon>{{ user.phone_number }}
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-2 d-flex justify-content-between align-items-center">
+      <span class="text-muted">Role</span>
+      <span class="badge bg-info-subtle text-info">{{ user.role_id }}</span>
+    </div>
+
+    <div class="d-flex justify-content-end align-items-center gap-2">
+      <button mat-button class="warn" (click)="handleAction('edit', user)">
+        Edit
+      </button>
+      <button mat-button class="error" (click)="handleAction('delete', user)">
+        Delete
+      </button>
+    </div>
+  </mat-card>
+</div>

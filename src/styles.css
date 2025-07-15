@@ -92,3 +92,21 @@ body {
 .mat-mdc-paginator {
   border-radius: 12px;
 }
+
+.warn.mat-mdc-button,
+.warn.mat-mdc-outlined-button,
+.warn.mat-mdc-mini-fab,
+.warn.mat-mdc-fab-base mat-icon {
+  background-color: var(--mat-sys-warn);
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
+.error.mat-mdc-button,
+.error.mat-mdc-outlined-button,
+.error.mat-mdc-mini-fab,
+.error.mat-mdc-fab-base mat-icon {
+  background-color: var(--mat-sys-error);
+  color: #ffffff !important;
+  border-radius: 8px;
+}

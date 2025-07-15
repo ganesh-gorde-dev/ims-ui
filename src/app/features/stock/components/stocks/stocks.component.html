@@ -5,8 +5,85 @@
       <p>Track all inventory transactions and changes</p>
     </div>
     <button mat-fab extended color="primary" (click)="onAddStock()">
-      <mat-icon>add</mat-icon> Add Product
+      <mat-icon>add</mat-icon> Add Stock
     </button>
   </div>
-  <app-stock-list></app-stock-list>
+  <app-stock-list (emitEvent)="onEmitEvent($event)"></app-stock-list>
 </div>
+
+<ng-template #addStockDialog>
+  <h2 mat-dialog-title>Add Stock</h2>
+  <mat-dialog-content>
+    <form [formGroup]="addStockForm" class="d-flex flex-column gap-3 my-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Product</mat-label>
+        <mat-select formControlName="productId">
+          <mat-option
+            *ngFor="let product of arrProducts"
+            [value]="product.product_id">
+            {{ product.product_name }}
+          </mat-option>
+        </mat-select>
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Supplier</mat-label>
+        <mat-select formControlName="supplierId">
+          <mat-option
+            *ngFor="let supplier of arrSuppliers"
+            [value]="supplier.supplier_id">
+            {{ supplier.supplier_name }}
+          </mat-option>
+        </mat-select>
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Price"
+          formControlName="price" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Movement Type</mat-label>
+        <mat-select formControlName="movementType">
+          <mat-option value="IN">In</mat-option>
+          <mat-option value="OUT">Out</mat-option>
+        </mat-select>
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Quantity</mat-label>
+        <input
+          matInput
+          type="number"
+          placeholder="Quantity"
+          formControlName="quantity" />
+        <mat-error> Field is required </mat-error>
+      </mat-form-field>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="true" color="warn">Cancel</button>
+    <button
+      mat-button
+      color="primary"
+      [disabled]="!addStockForm.valid"
+      (click)="onAddStockSave()">
+      Save
+    </button>
+  </mat-dialog-actions>
+</ng-template>
+
+<ng-template #deleteStockDialog>
+  <h2 mat-dialog-title>Delete Stock</h2>
+  <mat-dialog-content>
+    Are you sure you want to delete stock "{{ selectedStock.stock_id }}"?
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="true">Cancel</button>
+    <button mat-button color="warn" (click)="onDeleteStock()">Delete</button>
+  </mat-dialog-actions>
+</ng-template>

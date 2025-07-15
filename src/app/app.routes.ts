@@ -58,6 +58,15 @@ export const routes: Routes = [
         data: { title: 'Stock', permission: PERMISSION_MODULE.STOCK },
         canActivate: [PermissionGuard],
       },
+      {
+        path: 'supplier',
+        loadChildren: () =>
+          import('./features/supplier/supplier.routes').then(
+            m => m.SUPPLIER_ROUTES
+          ),
+        data: { title: 'Stock', permission: PERMISSION_MODULE.SUPPLIER },
+        canActivate: [PermissionGuard],
+      },
     ],
   },
   {

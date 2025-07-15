@@ -70,21 +70,21 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       path: '/tenant/supplier',
       icon: 'delivery_truck_bolt',
     },
-    {
-      label: 'Roles & Permission',
-      path: '/tenant/roles-permission',
-      icon: 'passkey',
-    },
-    {
-      label: 'Reports',
-      path: '/tenant/reports',
-      icon: 'finance_mode',
-    },
-    {
-      label: 'Audit Logs',
-      path: '/tenant/audit-logs',
-      icon: 'deployed_code_history',
-    },
+    // {
+    //   label: 'Roles & Permission',
+    //   path: '/tenant/roles-permission',
+    //   icon: 'passkey',
+    // },
+    // {
+    //   label: 'Reports',
+    //   path: '/tenant/reports',
+    //   icon: 'finance_mode',
+    // },
+    // {
+    //   label: 'Audit Logs',
+    //   path: '/tenant/audit-logs',
+    //   icon: 'deployed_code_history',
+    // },
   ];
 
   notifications: NotificationItem[] = [];

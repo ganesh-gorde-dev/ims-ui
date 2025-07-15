@@ -21,10 +21,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { DialogData, User } from '../../models/user-management.model';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '../../../../shared/shared.module';
+import { UserCardComponent } from '../user-card/user-card.component';
 
 @Component({
   selector: 'app-user-management',
-  imports: [UserListComponent, SharedModule],
+  imports: [SharedModule, UserCardComponent],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css',
 })
@@ -38,6 +39,9 @@ export class UserManagementComponent {
 
   @ViewChild(UserListComponent)
   userListComponent!: UserListComponent;
+
+  @ViewChild(UserCardComponent)
+  userCardComponent!: UserCardComponent;
 
   constructor(
     private _dialog: MatDialog,
@@ -100,7 +104,8 @@ export class UserManagementComponent {
 
       await this._apiService.post<User>(`user/company-admin`, payload);
       this._dialog.closeAll();
-      this.userListComponent.loadUsers();
+      this.userCardComponent.loadUsers();
+      // this.userListComponent.loadUsers();
     }
   }
 
@@ -168,13 +173,15 @@ export class UserManagementComponent {
         payload
       );
       this._dialog.closeAll();
-      this.userListComponent.loadUsers();
+      this.userCardComponent.loadUsers();
+      // this.userListComponent.loadUsers();
     }
   }
 
   async onDeleteUser() {
     await this._apiService.delete(`user/${this.selectedUser.user_id}`);
     this._dialog.closeAll();
-    this.userListComponent.loadUsers();
+    this.userCardComponent.loadUsers();
+    // this.userListComponent.loadUsers();
   }
 }

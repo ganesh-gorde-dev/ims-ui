@@ -1,33 +1,20 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
 import { SharedModule } from '../../../../shared/shared.module';
-import {
-  Stock,
-  StockQueryParams,
-  StockResponse,
-} from '../../models/stock.model';
+import { Supplier, SupplierResponse } from '../../models/supplier.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ApiService } from '../../../../core/services/api-interface.service';
-import {
-  Product,
-  ProductResponse,
-} from '../../../products/models/product.model';
+import { StockQueryParams } from '../../../stock/models/stock.model';
 
 @Component({
-  selector: 'app-stock-list',
+  selector: 'app-supplier-list',
   imports: [SharedModule],
-  templateUrl: './stock-list.component.html',
-  styleUrl: './stock-list.component.css',
+  templateUrl: './supplier-list.component.html',
+  styleUrl: './supplier-list.component.css',
 })
-export class StockListComponent {
-  displayedColumns: string[] = [
-    'product_name',
-    'price',
-    'movement_type',
-    'quantity',
-    'actions',
-  ];
-  dataSource = new MatTableDataSource<Stock>();
+export class SupplierListComponent {
+  displayedColumns: string[] = ['supplier_code', 'supplier_name', 'actions'];
+  dataSource = new MatTableDataSource<Supplier>();
   totalCount: number = 0;
   pageSize: number = 10;
   pageChangeSubscription: any;
@@ -37,16 +24,7 @@ export class StockListComponent {
 
   constructor(private _apiService: ApiService) {
     // Initialization logic can go here
-    this.loadStocks();
-  }
-
-  products: Product[] = [];
-  async getProducts() {
-    const products = await this._apiService.get<ProductResponse>('product', {
-      ispagination: false,
-    });
-
-    this.products = products.list;
+    this.loadSuppliers();
   }
 
   ngOnInit() {}
@@ -57,11 +35,11 @@ export class StockListComponent {
     this.dataSource.paginator = this.paginator;
     this.pageChangeSubscription = this.paginator?.page.subscribe(pageEvent => {
       this.pageSize = pageEvent.pageSize;
-      this.loadStocks(pageEvent.pageIndex + 1, pageEvent.pageSize);
+      this.loadSuppliers(pageEvent.pageIndex + 1, pageEvent.pageSize);
     });
   }
 
-  async loadStocks(
+  async loadSuppliers(
     pageNumber: number = 1,
     pageSize: number = this.pageSize,
     supplierId?: string
@@ -74,27 +52,17 @@ export class StockListComponent {
     if (supplierId) {
       queryParams.supplier_id = supplierId;
     }
-    await this.getProducts();
-    const productData = await this._apiService.get<StockResponse>(
-      'stock',
+    const supplierData = await this._apiService.get<SupplierResponse>(
+      'supplier',
       queryParams
     );
 
-    this.dataSource = new MatTableDataSource<Stock>(
-      productData.list.map(stock => {
-        return {
-          ...stock,
-          product_name:
-            this.products.find(p => p.product_id === stock.product_id)
-              ?.product_name || '',
-        };
-      })
-    );
-    this.totalCount = productData.pagination.count;
+    this.dataSource = new MatTableDataSource<Supplier>(supplierData.list);
+    this.totalCount = supplierData.pagination.count;
   }
 
-  handleAction(action: string, stock: Stock) {
+  handleAction(action: string, supplier: Supplier) {
     // Logic to handle edit action
-    this.emitEvent.emit({ action: action, stock });
+    this.emitEvent.emit({ action: action, supplier });
   }
 }

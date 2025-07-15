@@ -1,82 +1,61 @@
 <div class="main-layout-container position-relative">
   <mat-toolbar color="primary" class="sticky-toolbar">
     <mat-toolbar-row class="navbar-first">
-      <div class="d-flex align-items-center justify-content-start gap-2">
-        <img src="assets/images/logo-new.png" class="nav-logo" />
-        <!-- <div class="nav-logo d-flex align-items-center justify-content-center">
-          <mat-icon class="material-symbols-outlined">package_2</mat-icon>
-        </div>
-        <div class="d-flex flex-column">
-          <span class="fw-bold">IMS</span>
-          <span class="text-muted" style="font-size: small"
-            >Inventory Management</span
-          >
-        </div> -->
-        <!-- <div class="home-button">
-          <button type="button" mat-mini-fab (click)="redirectToPage()">
-            <mat-icon>home</mat-icon>
-          </button>
-        </div>
-        <span class="bread-crumbs">Home</span>
-        <mat-icon class="dark-grey">chevron_right</mat-icon>
-        <span class="bread-crumbs">{{ title }}</span> -->
-      </div>
-      <!-- <div class="d-flex align-items-center gap-2">
+      <span class="enterprise">
         <mat-icon class="material-symbols-outlined">domain</mat-icon>
-        <h6 class="fw-semibold">Amazon Web Services</h6>
-        <span class="badge rounded-pill text-bg-secondary fs-6">
-          Enterprise
-        </span>
-      </div> -->
+        Amazon Web Services
+      </span>
 
       <span class="spacer"></span>
 
-      <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
-        <mat-icon>dark_mode</mat-icon>
-      </button>
-      <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
+      <div>
+        <!-- <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
+          <mat-icon>dark_mode</mat-icon>
+        </button> -->
+        <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
         <mat-icon>format_color_fill</mat-icon>
       </button> -->
-      <mat-menu #themeMenu="matMenu">
-        @for(theme of _themeService.getThemes(); track theme.id) {
-        <button mat-menu-item (click)="_themeService.setTheme(theme.id)">
-          <div class="d-flex align-items-center gap-2">
-            <span
-              class="theme-color"
-              [ngStyle]="{ 'background-color': theme.primary }"></span>
-            {{ theme.displayName }}
-          </div>
-        </button>
-        }
-      </mat-menu>
-      <button mat-icon-button [matMenuTriggerFor]="notifMenu">
-        <mat-icon>notifications</mat-icon>
-        <span *ngIf="notifications.length > 0" class="badge">{{
-          notifications.length
-        }}</span>
-      </button>
-
-      <mat-menu #notifMenu="matMenu" class="notif-menu">
-        <ng-container *ngIf="notifications.length > 0; else noNotif">
-          <button mat-menu-item *ngFor="let notif of notifications">
-            <div class="notif-title">{{ notif.notification.title }}</div>
-            <div class="notif-message">{{ notif.notification.message }}</div>
+        <mat-menu #themeMenu="matMenu">
+          @for(theme of _themeService.getThemes(); track theme.id) {
+          <button mat-menu-item (click)="_themeService.setTheme(theme.id)">
+            <div class="d-flex align-items-center gap-2">
+              <span
+                class="theme-color"
+                [ngStyle]="{ 'background-color': theme.primary }"></span>
+              {{ theme.displayName }}
+            </div>
           </button>
-        </ng-container>
-        <ng-template #noNotif>
-          <button mat-menu-item>No new notifications</button>
-        </ng-template>
-      </mat-menu>
-
-      <button mat-icon-button [matMenuTriggerFor]="userMenu">
-        <mat-icon>account_circle</mat-icon>
-      </button>
-      <mat-menu #userMenu="matMenu">
-        <!-- <button mat-menu-item routerLink="/profile">Profile</button> -->
-        <button mat-menu-item (click)="logout()">
-          <mat-icon>power_settings_new</mat-icon>Logout
+          }
+        </mat-menu>
+        <button mat-icon-button [matMenuTriggerFor]="notifMenu">
+          <mat-icon>notifications</mat-icon>
+          <span *ngIf="notifications.length > 0" class="badge">{{
+            notifications.length
+          }}</span>
         </button>
-      </mat-menu>
+
+        <mat-menu #notifMenu="matMenu" class="notif-menu">
+          <ng-container *ngIf="notifications.length > 0; else noNotif">
+            <button mat-menu-item *ngFor="let notif of notifications">
+              <div class="notif-title">{{ notif.notification.title }}</div>
+              <div class="notif-message">{{ notif.notification.message }}</div>
+            </button>
+          </ng-container>
+          <ng-template #noNotif>
+            <button mat-menu-item>No new notifications</button>
+          </ng-template>
+        </mat-menu>
+
+        <button mat-icon-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <!-- <button mat-menu-item routerLink="/profile">Profile</button> -->
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>power_settings_new</mat-icon>Logout
+          </button>
+        </mat-menu>
+      </div>
 
       <!-- <button mat-icon-button aria-label="Logout" (click)="logout()">
         <mat-icon class="danger">power_settings_new</mat-icon>

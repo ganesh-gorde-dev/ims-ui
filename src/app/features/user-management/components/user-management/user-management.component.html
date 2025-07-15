@@ -8,7 +8,11 @@
       <mat-icon>add</mat-icon> Add User
     </button>
   </div>
-  <app-user-list (emitEvent)="onEmitEvent($event)"></app-user-list>
+  <!-- <app-user-list (emitEvent)="onEmitEvent($event)"></app-user-list> -->
+
+  <div class="d-flex flex-wrap gap-3">
+    <app-user-card (emitEvent)="onEmitEvent($event)"></app-user-card>
+  </div>
 </div>
 
 <ng-template #addUserDialog>
