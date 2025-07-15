@@ -51,6 +51,13 @@ export const routes: Routes = [
         data: { title: 'Category', permission: PERMISSION_MODULE.USER },
         canActivate: [PermissionGuard],
       },
+      {
+        path: 'stock',
+        loadChildren: () =>
+          import('./features/stock/stock.routes').then(m => m.STOCK_ROUTES),
+        data: { title: 'Stock', permission: PERMISSION_MODULE.STOCK },
+        canActivate: [PermissionGuard],
+      },
     ],
   },
   {
