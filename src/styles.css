@@ -93,7 +93,20 @@ body {
   border-radius: 12px;
 }
 
+.primary.mat-mdc-button,
+.primary.mat-mdc-menu-item,
+.primary.mat-mdc-menu-item mat-icon,
+.primary.mat-mdc-outlined-button,
+.primary.mat-mdc-mini-fab,
+.primary.mat-mdc-fab-base mat-icon {
+  background-color: var(--mat-sys-primary);
+  color: #ffffff !important;
+  border-radius: 8px;
+}
+
 .warn.mat-mdc-button,
+.warn.mat-mdc-menu-item,
+.warn.mat-mdc-menu-item mat-icon,
 .warn.mat-mdc-outlined-button,
 .warn.mat-mdc-mini-fab,
 .warn.mat-mdc-fab-base mat-icon {
@@ -103,10 +116,20 @@ body {
 }
 
 .error.mat-mdc-button,
+.error.mat-mdc-menu-item,
+.error.mat-mdc-menu-item mat-icon,
 .error.mat-mdc-outlined-button,
 .error.mat-mdc-mini-fab,
 .error.mat-mdc-fab-base mat-icon {
   background-color: var(--mat-sys-error);
   color: #ffffff !important;
   border-radius: 8px;
+}
+
+.warn.mat-icon {
+  color: var(--mat-sys-warn) !important;
+}
+
+.error.mat-icon {
+  color: var(--mat-sys-error) !important;
 }

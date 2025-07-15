@@ -6,8 +6,15 @@
   flex: 1 1 auto;
 }
 
-.page-wrapper {
+.tenant-page-wrapper {
   padding: 128px 16px 16px 16px;
+  background-color: var(--mat-sys-on-secondary);
+  min-height: 100vh;
+  padding-bottom: 30px;
+}
+
+.admin-page-wrapper {
+  padding: 64px 16px 16px 16px;
   background-color: var(--mat-sys-on-secondary);
   min-height: 100vh;
   padding-bottom: 30px;
@@ -132,4 +139,11 @@ h4,
 h5,
 h6 {
   color: var(--mat-sys-inverse-surface);
+}
+
+.action-btn {
+  font-size: larger;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

@@ -33,13 +33,13 @@
       <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
       <td mat-cell *matCellDef="let element">
         <div class="d-flex gap-3 justify-content-center">
-          <mat-icon class="primary" (click)="handleAction('view', element)"
+          <!-- <mat-icon class="primary" (click)="handleAction('view', element)"
             >visibility</mat-icon
-          >
+          > -->
           <mat-icon class="warn" (click)="handleAction('edit', element)"
             >edit</mat-icon
           >
-          <mat-icon class="danger" (click)="handleAction('delete', element)"
+          <mat-icon class="error" (click)="handleAction('delete', element)"
             >delete</mat-icon
           >
         </div>

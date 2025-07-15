@@ -117,6 +117,12 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
       case 'add_permission':
         this.isAddPermission = event.value;
         break;
+      case 'edit':
+        this.handleEditUser(event.user);
+        break;
+      case 'delete':
+        this.handleDeleteUser(event.user);
+        break;
       default:
         console.warn('Unknown event action:', event.action);
     }
@@ -326,5 +332,57 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
     await this._apiService.post<any>(`admin/permission`, payload);
 
     this.permissionListComponent.loadPermissions();
+  }
+
+  handleEditUser(user: any) {
+    // Logic to handle edit user
+    this.userForm.patchValue({
+      email: user.email,
+      phone_number: user.phone_number,
+      role_id: user.role_id,
+      last_name: user.last_name,
+      first_name: user.first_name,
+      profile_photo: user.profile_photo,
+    });
+
+    const dialogRef = this._dialog.open(this.addUserDialog, {
+      width: '800px',
+      data: { isEdit: true, user },
+      id: 'editUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  selectedUser!: User;
+  @ViewChild('deleteUserDialog') deleteUserDialog!: TemplateRef<any>;
+  handleDeleteUser(user: User) {
+    this.selectedUser = user;
+    // Logic to handle delete user
+    this._dialog.open(this.deleteUserDialog, {
+      width: '400px',
+      id: 'deleteUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
+    });
+  }
+
+  async onDeleteUser() {
+    // Logic to delete the selected user
+    const userId = this.userForm.value.user_id; // Assuming user_id is part of the form
+    await this._apiService.delete(`user/${userId}`);
+    this._dialog.closeAll();
+    this.userListComponent.loadUsers();
+  }
+
+  async onAddPermissionSave() {
+    // Logic to save the new permission
+    const payload = {
+      tenant_id: this.tenantData.tenant_id,
+    };
+    await this._apiService.post('admin/permission', payload);
+
+    this.permissionListComponent.loadPermissions();
+    this._dialog.closeAll();
   }
 }

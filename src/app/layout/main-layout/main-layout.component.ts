@@ -90,7 +90,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   notifications: NotificationItem[] = [];
   unreadCount = 0;
   private sub!: Subscription;
-
+  isAdmin: boolean = false;
   constructor(
     public _themeService: ThemeService,
     public _router: Router,
@@ -112,9 +112,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     } else {
       this.isAdminLogin = false;
     }
+
+    this.isAdmin = this._tenantConfigService.isAdmin();
   }
 
   ngOnInit(): void {
+    if (!this.isAdmin) this.initializeNotifications();
+  }
+
+  initializeNotifications() {
     const notifications: any = this._notificationService.getNotifications();
 
     this.notifications = notifications;

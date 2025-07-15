@@ -1,12 +1,30 @@
 <div class="main-layout-container position-relative">
   <mat-toolbar color="primary" class="sticky-toolbar">
     <mat-toolbar-row class="navbar-first">
-      <span class="enterprise">
+      <div class="d-flex align-items-center justify-content-start gap-2">
+        <img src="assets/images/logo-new.png" class="nav-logo" />
+        <!-- <div class="nav-logo d-flex align-items-center justify-content-center">
+          <mat-icon class="material-symbols-outlined">package_2</mat-icon>
+        </div>
+        <div class="d-flex flex-column">
+          <span class="fw-bold">IMS</span>
+          <span class="text-muted" style="font-size: small"
+            >Inventory Management</span
+          >
+        </div> -->
+        <!-- <div class="home-button">
+          <button type="button" mat-mini-fab (click)="redirectToPage()">
+            <mat-icon>home</mat-icon>
+          </button>
+        </div>
+        <span class="bread-crumbs">Home</span>
+        <mat-icon class="dark-grey">chevron_right</mat-icon>
+        <span class="bread-crumbs">{{ title }}</span> -->
+      </div>
+      <!-- <span class="enterprise">
         <mat-icon class="material-symbols-outlined">domain</mat-icon>
         Amazon Web Services
-      </span>
-
-      <span class="spacer"></span>
+      </span> -->
 
       <div>
         <!-- <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
@@ -27,8 +45,11 @@
           </button>
           }
         </mat-menu>
-        <button mat-icon-button [matMenuTriggerFor]="notifMenu">
-          <mat-icon>notifications</mat-icon>
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="notifMenu"
+          *ngIf="!isAdmin">
+          <mat-icon class="action-btn">notifications</mat-icon>
           <span *ngIf="notifications.length > 0" class="badge">{{
             notifications.length
           }}</span>
@@ -46,13 +67,14 @@
           </ng-template>
         </mat-menu>
 
-        <button mat-icon-button [matMenuTriggerFor]="userMenu">
-          <mat-icon>account_circle</mat-icon>
+        <button mat-icon-button (click)="logout()">
+          <mat-icon class="action-btn error">power_settings_new</mat-icon>
         </button>
-        <mat-menu #userMenu="matMenu">
+        <mat-menu #userMenu="matMenu" style="min-width: 500px">
           <!-- <button mat-menu-item routerLink="/profile">Profile</button> -->
-          <button mat-menu-item (click)="logout()">
-            <mat-icon>power_settings_new</mat-icon>Logout
+          <button mat-menu-item class="error" (click)="logout()">
+            <mat-icon>power_settings_new</mat-icon>
+            Logout
           </button>
         </mat-menu>
       </div>
@@ -81,7 +103,7 @@
     </mat-toolbar-row>
   </mat-toolbar>
 
-  <div class="page-wrapper" [ngClass]="isAdminLogin ? '' : ''">
+  <div [ngClass]="isAdminLogin ? 'admin-page-wrapper' : 'tenant-page-wrapper'">
     <router-outlet></router-outlet>
   </div>
 </div>
