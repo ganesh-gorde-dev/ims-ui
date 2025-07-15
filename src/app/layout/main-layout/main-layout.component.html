@@ -3,20 +3,29 @@
     <mat-toolbar-row class="navbar-first">
       <div class="d-flex align-items-center justify-content-start gap-2">
         <img src="assets/images/logo-new.png" class="nav-logo" />
-        <div class="home-button">
+        <!-- <div class="nav-logo d-flex align-items-center justify-content-center">
+          <mat-icon class="material-symbols-outlined">package_2</mat-icon>
+        </div>
+        <div class="d-flex flex-column">
+          <span class="fw-bold">IMS</span>
+          <span class="text-muted" style="font-size: small"
+            >Inventory Management</span
+          >
+        </div> -->
+        <!-- <div class="home-button">
           <button type="button" mat-mini-fab (click)="redirectToPage()">
             <mat-icon>home</mat-icon>
           </button>
         </div>
         <span class="bread-crumbs">Home</span>
         <mat-icon class="dark-grey">chevron_right</mat-icon>
-        <span class="bread-crumbs">{{ title }}</span>
+        <span class="bread-crumbs">{{ title }}</span> -->
       </div>
       <span class="spacer"></span>
 
-      <!-- <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
+      <button mat-icon-button (click)="_themeService.toggleLightDarkTheme()">
         <mat-icon>dark_mode</mat-icon>
-      </button> -->
+      </button>
       <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
         <mat-icon>format_color_fill</mat-icon>
       </button> -->
@@ -73,10 +82,10 @@
             [routerLink]="link.path"
             routerLinkActive="active"
             [routerLinkActiveOptions]="{ exact: true }">
-            <mat-icon
-              class="link-icons dark-grey"
+            <span
+              class="link-icons dark-grey material-symbols-outlined"
               [class.active]="_router.isActive(link.path, true)"
-              >{{ link.icon }}</mat-icon
+              >{{ link.icon }}</span
             >
             {{ link.label }}
           </a>

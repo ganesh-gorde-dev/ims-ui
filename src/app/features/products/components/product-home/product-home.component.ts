@@ -22,22 +22,11 @@ import {
 } from '../../../category/models/category.model';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-product-home',
-  imports: [
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatDialogModule,
-    FormsModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    ProductListComponent,
-    MatOptionModule,
-    MatSelectModule,
-  ],
+  imports: [SharedModule, ProductListComponent],
   templateUrl: './product-home.component.html',
   styleUrl: './product-home.component.css',
 })
@@ -82,6 +71,8 @@ export class ProductHomeComponent {
     const dialogRef = this._dialog.open(this.addProductDialog, {
       width: '600px',
       id: 'addProductDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.addProductForm.reset();
@@ -167,6 +158,8 @@ export class ProductHomeComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addTenantDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -176,6 +169,9 @@ export class ProductHomeComponent {
     this.selectedProduct = product;
     const dialogRef = this._dialog.open(this.deleteProductDialog, {
       width: '400px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'deleteProductDialog',
     });
   }
 }

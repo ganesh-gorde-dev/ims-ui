@@ -35,21 +35,7 @@ import { UserListComponent } from '../user-list/user-list.component';
 
 @Component({
   selector: 'app-tenant-details',
-  imports: [
-    MatTabsModule,
-    CommonModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    FormsModule,
-    MatDialogModule,
-    MatOptionModule,
-    MatSelectModule,
-    SharedModule,
-    PermissionListComponent,
-    UserListComponent,
-  ],
+  imports: [SharedModule, PermissionListComponent, UserListComponent],
   templateUrl: './tenant-details.component.html',
   styleUrl: './tenant-details.component.css',
 })
@@ -251,6 +237,9 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
     // Open a dialog or form to add user
     const dialogRef = this._dialog.open(this.addUserDialog, {
       width: '800px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'addUserDialog',
     });
   }
 
@@ -280,6 +269,9 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
     this.initializeForm();
     const dialogRef = this._dialog.open(this.addConfigurationDialog, {
       width: '600px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'addConfigurationDialog',
     });
     if (this.editMode) {
       this.configurationForm.patchValue({

@@ -19,10 +19,11 @@ import {
 } from '../../../../core/services/api-interface.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { Tenant, TenantResponse } from '../../models/tenant.model';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-tenant-list',
-  imports: [MatTableModule, CommonModule, MatIconModule, MatPaginatorModule],
+  imports: [SharedModule],
   templateUrl: './tenant-list.component.html',
   styleUrl: './tenant-list.component.css',
   standalone: true,

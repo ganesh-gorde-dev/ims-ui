@@ -11,10 +11,11 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Category, CategoryResponse } from '../../models/category.model';
 import { ApiService } from '../../../../core/services/api-interface.service';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-category-list',
-  imports: [MatTableModule, CommonModule, MatIconModule, MatPaginatorModule],
+  imports: [SharedModule],
   templateUrl: './category-list.component.html',
   styleUrl: './category-list.component.css',
 })

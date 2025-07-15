@@ -20,22 +20,11 @@ import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogData, User } from '../../models/user-management.model';
 import { MatInputModule } from '@angular/material/input';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-user-management',
-  imports: [
-    UserListComponent,
-    CommonModule,
-    FormsModule,
-    MatIconModule,
-    MatDialogModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatButtonModule,
-  ],
+  imports: [UserListComponent, SharedModule],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.css',
 })
@@ -88,6 +77,8 @@ export class UserManagementComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
 
     this.userForm.reset();
@@ -143,6 +134,8 @@ export class UserManagementComponent {
       width: '600px',
       data: this.dialogData,
       id: 'addUserDialog',
+      autoFocus: false,
+      restoreFocus: false,
     });
   }
 
@@ -152,6 +145,9 @@ export class UserManagementComponent {
     this.selectedUser = user;
     const dialogRef = this._dialog.open(this.deleteUserDialog, {
       width: '400px',
+      autoFocus: false,
+      restoreFocus: false,
+      id: 'deleteUserDialog',
     });
   }
 

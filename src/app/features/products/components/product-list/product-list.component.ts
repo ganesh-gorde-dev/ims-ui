@@ -5,10 +5,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { SharedModule } from '../../../../shared/shared.module';
 
 @Component({
   selector: 'app-product-list',
-  imports: [MatTableModule, MatPaginatorModule, CommonModule, MatIconModule],
+  imports: [SharedModule],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css',
 })
