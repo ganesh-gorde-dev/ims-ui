@@ -18,3 +18,9 @@
     container-max-width: 100%,
   )
 );
+
+@include mat.toolbar-overrides(
+  (
+    container-background-color: var(--mat-sys-background),
+  )
+);
