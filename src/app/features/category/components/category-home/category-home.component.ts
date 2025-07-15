@@ -17,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { CategoryPayload } from '../../models/category.model';
 import { SharedModule } from '../../../../shared/shared.module';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-category-home',
@@ -33,12 +34,33 @@ export class CategoryHomeComponent {
 
   addCategoryForm!: FormGroup;
 
+  searchTerm: string = '';
+  private searchChanged: Subject<string> = new Subject<string>();
+  private destroy$: Subject<void> = new Subject<void>();
+
   constructor(
     private _dialog: MatDialog,
     private _fb: FormBuilder,
     private _apiService: ApiService
   ) {
     this.initializeForm();
+  }
+
+  ngOnInit(): void {
+    // Subscribe to search changes if needed
+    this.searchChanged
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((term: string) => {
+        this.categoryListComponent.loadCategories(
+          1,
+          this.categoryListComponent.pageSize,
+          term
+        );
+      });
+  }
+
+  onSearchChange(term: string) {
+    this.searchChanged.next(term);
   }
 
   initializeForm() {

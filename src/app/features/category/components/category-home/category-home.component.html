@@ -1,9 +1,25 @@
 <div class="container-fluid">
-  <div class="row d-flex justify-content-end align-items-center my-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h4>Categories</h4>
+      <p>Manage your product categories</p>
+    </div>
     <button mat-fab extended color="primary" (click)="onAddCategory()">
       <mat-icon>add</mat-icon> Add Category
     </button>
   </div>
+
+  <mat-card class="p-4 mb-2">
+    <mat-form-field class="w-100">
+      <input
+        matInput
+        type="text"
+        placeholder="Search by name or code"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange($event)" />
+    </mat-form-field>
+  </mat-card>
+
   <app-category-list (emitEvent)="onEmitEvent($event)"></app-category-list>
 </div>
 

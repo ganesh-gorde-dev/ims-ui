@@ -1,6 +1,12 @@
 import { Product, ProductDialog } from './../../models/product.model';
 import { CommonModule } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -23,6 +29,7 @@ import {
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../../../shared/shared.module';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-product-home',
@@ -30,7 +37,7 @@ import { SharedModule } from '../../../../shared/shared.module';
   templateUrl: './product-home.component.html',
   styleUrl: './product-home.component.css',
 })
-export class ProductHomeComponent {
+export class ProductHomeComponent implements OnInit, OnDestroy {
   @ViewChild(ProductListComponent)
   productListComponent!: ProductListComponent;
 
@@ -38,6 +45,10 @@ export class ProductHomeComponent {
 
   addProductForm!: FormGroup;
   arrCategories!: Category[];
+
+  searchTerm: string = '';
+  private searchChanged: Subject<string> = new Subject<string>();
+  private destroy$: Subject<void> = new Subject<void>();
   constructor(
     private _dialog: MatDialog,
     private _fb: FormBuilder,
@@ -45,6 +56,23 @@ export class ProductHomeComponent {
   ) {
     this.initializeForm();
     this.getCategories();
+  }
+
+  ngOnInit(): void {
+    // Subscribe to search changes if needed
+    this.searchChanged
+      .pipe(debounceTime(300), takeUntil(this.destroy$))
+      .subscribe((term: string) => {
+        this.productListComponent.loadProducts(
+          1,
+          this.productListComponent.pageSize,
+          term
+        );
+      });
+  }
+
+  onSearchChange(term: string) {
+    this.searchChanged.next(term);
   }
 
   initializeForm() {
@@ -173,5 +201,10 @@ export class ProductHomeComponent {
       restoreFocus: false,
       id: 'deleteProductDialog',
     });
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

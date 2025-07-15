@@ -9,7 +9,11 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { Category, CategoryResponse } from '../../models/category.model';
+import {
+  Category,
+  CategoryQueryParams,
+  CategoryResponse,
+} from '../../models/category.model';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { SharedModule } from '../../../../shared/shared.module';
 
@@ -45,14 +49,27 @@ export class CategoryListComponent implements OnInit {
       this.loadCategories(pageEvent.pageIndex + 1, pageEvent.pageSize);
     });
   }
-
   async loadCategories(
     pageNumber: number = 1,
-    pageSize: number = this.pageSize
+    pageSize: number = this.pageSize,
+    categoryName?: string,
+    categoryCode?: string
   ) {
+    const queryParams: CategoryQueryParams = {
+      ispagination: true,
+      page: pageNumber,
+      pagesize: pageSize,
+    };
+    if (categoryName) {
+      queryParams['category_name'] = categoryName;
+    }
+    if (categoryCode) {
+      queryParams['category_code'] = categoryCode;
+    }
+
     const categoryData = await this._apiService.get<CategoryResponse>(
       'category',
-      { ispagination: true, page: pageNumber, pagesize: pageSize }
+      queryParams
     );
 
     this.dataSource = new MatTableDataSource<Category>(categoryData.list);

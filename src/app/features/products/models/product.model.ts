@@ -29,3 +29,11 @@ export interface ProductDialog {
   isEdit: boolean;
   product?: Product;
 }
+
+export interface ProductQueryParams {
+  ispagination: boolean;
+  page: number;
+  pagesize: number;
+  product_name?: string;
+  product_code?: string;
+}

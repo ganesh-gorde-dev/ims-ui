@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Output, ViewChild } from '@angular/core';
-import { Product, ProductResponse } from '../../models/product.model';
+import {
+  Product,
+  ProductQueryParams,
+  ProductResponse,
+} from '../../models/product.model';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
@@ -46,12 +50,27 @@ export class ProductListComponent {
     });
   }
 
-  async loadProducts(pageNumber: number = 1, pageSize: number = this.pageSize) {
-    const productData = await this._apiService.get<ProductResponse>('product', {
+  async loadProducts(
+    pageNumber: number = 1,
+    pageSize: number = this.pageSize,
+    productName?: string,
+    productCode?: string
+  ) {
+    const queryParams: ProductQueryParams = {
       ispagination: true,
       page: pageNumber,
       pagesize: pageSize,
-    });
+    };
+    if (productName) {
+      queryParams.product_name = productName;
+    }
+    if (productCode) {
+      queryParams.product_code = productCode;
+    }
+    const productData = await this._apiService.get<ProductResponse>(
+      'product',
+      queryParams
+    );
 
     this.dataSource = new MatTableDataSource<Product>(productData.list);
     this.totalCount = productData.pagination.count;
