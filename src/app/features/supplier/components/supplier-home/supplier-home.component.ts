@@ -20,6 +20,7 @@ import { Supplier } from '../../models/supplier.model';
 })
 export class SupplierHomeComponent {
   addSupplierForm!: FormGroup;
+  filterForm!: FormGroup;
 
   @ViewChild('addSupplierDialog') addSupplierDialog!: TemplateRef<any>;
 
@@ -41,6 +42,28 @@ export class SupplierHomeComponent {
       supplierName: ['', Validators.required],
       supplierCode: ['', Validators.required],
     });
+
+    this.filterForm = this._fb.group({
+      supplier_name: [null],
+      supplier_code: [null],
+    });
+  }
+
+  onApply() {
+    this.supplierListComponent.loadSuppliers(
+      1,
+      this.supplierListComponent.pageSize,
+      this.filterForm.value
+    );
+  }
+
+  onReset() {
+    this.filterForm.reset();
+    this.supplierListComponent.loadSuppliers(
+      1,
+      this.supplierListComponent.pageSize,
+      null
+    );
   }
 
   onAddSupplier() {

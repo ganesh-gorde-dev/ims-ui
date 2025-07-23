@@ -64,15 +64,24 @@ export class StockListComponent {
   async loadStocks(
     pageNumber: number = 1,
     pageSize: number = this.pageSize,
-    supplierId?: string
+    params?: {
+      // supplier_id: string;
+      // product_id: string;
+      movement_type: 'IN' | 'OUT';
+      reference_number: string;
+    } | null
   ) {
     const queryParams: StockQueryParams = {
       ispagination: true,
       page: pageNumber,
       pagesize: pageSize,
     };
-    if (supplierId) {
-      queryParams.supplier_id = supplierId;
+    if (params) {
+      // Filter out null key value from params
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value !== null)
+      );
+      Object.assign(queryParams, filteredParams);
     }
     await this.getProducts();
     const productData = await this._apiService.get<StockResponse>(

@@ -8,7 +8,46 @@
       <mat-icon>add</mat-icon> Add Supplier
     </button>
   </div>
-  <app-supplier-list (emitEvent)="onEmitEvent($event)"></app-supplier-list>
+  <div class="d-flex flex-row gap-3">
+    <!-- Filter section: 20% width -->
+    <div style="width: 20%">
+      <mat-card class="p-4 mb-2">
+        <mat-card-header>
+          <p
+            class="fs-5 fw-semibold text-muted d-flex align-items-center gap-2">
+            Filter <mat-icon>filter_alt</mat-icon>
+          </p>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="filterForm">
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="supplier_name"
+                type="text"
+                placeholder="Supplier Name" />
+            </mat-form-field>
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="supplier_code"
+                type="text"
+                placeholder="Supplier Code" />
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="onApply()">Apply</button>
+          <button mat-button (click)="onReset()">Reset</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Main content: 80% width -->
+    <div style="width: 80%">
+      <app-supplier-list (emitEvent)="onEmitEvent($event)"></app-supplier-list>
+    </div>
+  </div>
 </div>
 
 <ng-template #addSupplierDialog let-data>

@@ -52,19 +52,20 @@ export class CategoryListComponent implements OnInit {
   async loadCategories(
     pageNumber: number = 1,
     pageSize: number = this.pageSize,
-    categoryName?: string,
-    categoryCode?: string
+    params?: { category_name: string; category_code: string } | null
   ) {
     const queryParams: CategoryQueryParams = {
       ispagination: true,
       page: pageNumber,
       pagesize: pageSize,
     };
-    if (categoryName) {
-      queryParams['category_name'] = categoryName;
-    }
-    if (categoryCode) {
-      queryParams['category_code'] = categoryCode;
+
+    if (params) {
+      // Filter out null key value from params
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value !== null)
+      );
+      Object.assign(queryParams, filteredParams);
     }
 
     const categoryData = await this._apiService.get<CategoryResponse>(

@@ -63,3 +63,51 @@ export enum PERMISSION {
   GET_STOCK_SUMMARY = '075aa86e-4000-4d2b-9147-622a566f9600',
   GET_AUDIT_LOGS = '29be0419-a27a-478d-936c-9bcee56c7a6f',
 }
+
+export const NAV_LINKS = [
+  {
+    label: 'Product',
+    path: '/tenant/product',
+    icon: 'shopping_cart',
+    module: 'Product',
+  },
+  {
+    label: 'Category',
+    path: '/tenant/category',
+    icon: 'category',
+    module: 'Category',
+  },
+  {
+    label: 'User Management',
+    path: '/tenant/user-management',
+    icon: 'group',
+    module: 'User',
+  },
+  {
+    label: 'Stock',
+    path: '/tenant/stock',
+    icon: 'inventory_2',
+    module: 'Stock',
+  },
+  {
+    label: 'Supplier',
+    path: '/tenant/supplier',
+    icon: 'delivery_truck_bolt',
+    module: 'Supplier',
+  },
+  // {
+  //   label: 'Roles & Permission',
+  //   path: '/tenant/roles-permission',
+  //   icon: 'passkey',
+  // },
+  // {
+  //   label: 'Reports',
+  //   path: '/tenant/reports',
+  //   icon: 'finance_mode',
+  // },
+  // {
+  //   label: 'Audit Logs',
+  //   path: '/tenant/audit-logs',
+  //   icon: 'deployed_code_history',
+  // },
+];

@@ -42,15 +42,19 @@ export class SupplierListComponent {
   async loadSuppliers(
     pageNumber: number = 1,
     pageSize: number = this.pageSize,
-    supplierId?: string
+    params?: { supplier_name: string; supplier_code: string } | null
   ) {
     const queryParams: StockQueryParams = {
       ispagination: true,
       page: pageNumber,
       pagesize: pageSize,
     };
-    if (supplierId) {
-      queryParams.supplier_id = supplierId;
+    if (params) {
+      // Filter out null key value from params
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value !== null)
+      );
+      Object.assign(queryParams, filteredParams);
     }
     const supplierData = await this._apiService.get<SupplierResponse>(
       'supplier',

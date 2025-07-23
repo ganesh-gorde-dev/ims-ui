@@ -4,7 +4,12 @@
       <h4>User Management</h4>
       <p>Manage user accounts and permissions</p>
     </div>
-    <button mat-fab extended color="primary" (click)="onAdduser()">
+    <button
+      mat-fab
+      extended
+      color="primary"
+      *ngIf="hasPermission(PERMISSION.CREATE_USER)"
+      (click)="onAdduser()">
       <mat-icon>add</mat-icon> Add User
     </button>
   </div>

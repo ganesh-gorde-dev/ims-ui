@@ -1,3 +1,4 @@
+import { NAV_LINKS } from './../../shared/constant/db.constants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,8 +20,9 @@ import { SpinnerService } from '../../core/services/spinner.service';
 import { Subject, Subscription, filter, map, mergeMap, takeUntil } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { TenantConfigService } from '../../core/services/tenant-config.service';
-import { NotificationItem } from '../../shared/models/global.model';
+import { NotificationItem, Permission } from '../../shared/models/global.model';
 import { NotificationService } from '../../core/services/notification.service';
+import { PermissionService } from '../../core/services/permission.service';
 
 @Component({
   selector: 'app-main-layout',
@@ -44,48 +46,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   title = '';
   private destroy$ = new Subject<void>();
   isAdminLogin = true;
-  navLinks = [
-    {
-      label: 'Product',
-      path: '/tenant/product',
-      icon: 'shopping_cart',
-    },
-    {
-      label: 'Category',
-      path: '/tenant/category',
-      icon: 'category',
-    },
-    {
-      label: 'User Management',
-      path: '/tenant/user-management',
-      icon: 'group',
-    },
-    {
-      label: 'Stock',
-      path: '/tenant/stock',
-      icon: 'inventory_2',
-    },
-    {
-      label: 'Supplier',
-      path: '/tenant/supplier',
-      icon: 'delivery_truck_bolt',
-    },
-    // {
-    //   label: 'Roles & Permission',
-    //   path: '/tenant/roles-permission',
-    //   icon: 'passkey',
-    // },
-    // {
-    //   label: 'Reports',
-    //   path: '/tenant/reports',
-    //   icon: 'finance_mode',
-    // },
-    // {
-    //   label: 'Audit Logs',
-    //   path: '/tenant/audit-logs',
-    //   icon: 'deployed_code_history',
-    // },
-  ];
+  navLinks: { label: string; icon: string; path: string; module: string }[];
 
   notifications: NotificationItem[] = [];
   unreadCount = 0;
@@ -98,7 +59,8 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     private _spinnerService: SpinnerService,
     private _tenantConfigService: TenantConfigService,
-    private _notificationService: NotificationService
+    private _notificationService: NotificationService,
+    private _permissionService: PermissionService
   ) {
     this._router.events
       .pipe(filter(event => event instanceof NavigationEnd))
@@ -113,6 +75,16 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       this.isAdminLogin = false;
     }
 
+    const permissions = (
+      this._permissionService.getPermissions() as Permission[]
+    ).map(permission => {
+      return permission.module;
+    });
+    console.log(permissions);
+    this.navLinks = NAV_LINKS.filter(nav => {
+      return permissions.includes(nav.module);
+    });
+    console.log(this.navLinks);
     this.isAdmin = this._tenantConfigService.isAdmin();
   }
 

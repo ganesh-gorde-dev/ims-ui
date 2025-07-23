@@ -33,6 +33,7 @@ export class CategoryHomeComponent {
   @ViewChild('deleteCategoryDialog') deleteCategoryDialog!: TemplateRef<any>;
 
   addCategoryForm!: FormGroup;
+  filterForm!: FormGroup;
 
   searchTerm: string = '';
   private searchChanged: Subject<string> = new Subject<string>();
@@ -48,15 +49,23 @@ export class CategoryHomeComponent {
 
   ngOnInit(): void {
     // Subscribe to search changes if needed
-    this.searchChanged
-      .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe((term: string) => {
-        this.categoryListComponent.loadCategories(
-          1,
-          this.categoryListComponent.pageSize,
-          term
-        );
-      });
+  }
+
+  onApply() {
+    this.categoryListComponent.loadCategories(
+      1,
+      this.categoryListComponent.pageSize,
+      this.filterForm.value
+    );
+  }
+
+  onReset() {
+    this.filterForm.reset();
+    this.categoryListComponent.loadCategories(
+      1,
+      this.categoryListComponent.pageSize,
+      null
+    );
   }
 
   onSearchChange(term: string) {
@@ -67,6 +76,11 @@ export class CategoryHomeComponent {
     this.addCategoryForm = this._fb.group({
       categoryCode: ['', Validators.required],
       categoryName: ['', Validators.required],
+    });
+
+    this.filterForm = this._fb.group({
+      category_code: [null],
+      category_name: [null],
     });
   }
 

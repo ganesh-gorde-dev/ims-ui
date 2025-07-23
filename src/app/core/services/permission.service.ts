@@ -15,7 +15,20 @@ export class PermissionService {
 
   async init() {
     const permissions = await this._apiService.get<Permission[]>('permission');
-    this.permissionsSubject.next(permissions);
+
+    const role_permissions = await this._apiService.get<Permission[]>(
+      'role-permission'
+    );
+
+    // compare both object and filetr out permission which have permission_id in role permissions.
+    const filteredPermissions = permissions.filter(permission => {
+      return role_permissions.some(
+        rolePermission =>
+          rolePermission.permission_id === permission.permission_id
+      );
+    });
+
+    this.permissionsSubject.next(filteredPermissions);
   }
 
   // Call this after login or from resolver
@@ -29,10 +42,8 @@ export class PermissionService {
     );
   }
 
-  getPermissions(): string[] {
-    return this.permissionsSubject.value.map(
-      permission => permission.permission_id
-    );
+  getPermissions(): Permission[] {
+    return this.permissionsSubject.value;
   }
 
   checkAuth(module: string) {

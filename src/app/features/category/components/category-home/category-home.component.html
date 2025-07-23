@@ -9,18 +9,43 @@
     </button>
   </div>
 
-  <mat-card class="p-4 mb-2">
-    <mat-form-field class="w-100">
-      <input
-        matInput
-        type="text"
-        placeholder="Search by name or code"
-        [(ngModel)]="searchTerm"
-        (ngModelChange)="onSearchChange($event)" />
-    </mat-form-field>
-  </mat-card>
-
-  <app-category-list (emitEvent)="onEmitEvent($event)"></app-category-list>
+  <div class="d-flex flex-row gap-3">
+    <div style="width: 20%">
+      <mat-card class="p-4 mb-2">
+        <mat-card-header>
+          <p
+            class="fs-5 fw-semibold text-muted d-flex align-items-center gap-2">
+            Filter <mat-icon>filter_alt</mat-icon>
+          </p>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="filterForm">
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="category_name"
+                type="text"
+                placeholder="Category Name" />
+            </mat-form-field>
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="category_code"
+                type="text"
+                placeholder="Category Code" />
+            </mat-form-field>
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="onApply()">Apply</button>
+          <button mat-button (click)="onReset()">Reset</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+    <div style="width: 80%">
+      <app-category-list (emitEvent)="onEmitEvent($event)"></app-category-list>
+    </div>
+  </div>
 </div>
 
 <ng-template #addCategoryDialog>

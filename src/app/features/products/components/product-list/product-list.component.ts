@@ -10,6 +10,8 @@ import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { SharedModule } from '../../../../shared/shared.module';
+import { PermissionService } from '../../../../core/services/permission.service';
+import { PERMISSION } from '../../../../shared/constant/db.constants';
 
 @Component({
   selector: 'app-product-list',
@@ -32,8 +34,11 @@ export class ProductListComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @Output() emitEvent: EventEmitter<any> = new EventEmitter<any>();
-
-  constructor(private _apiService: ApiService) {
+  PERMISSION = PERMISSION;
+  constructor(
+    private _apiService: ApiService,
+    private _permisionService: PermissionService
+  ) {
     // Initialization logic can go here
     this.loadProducts();
   }
@@ -53,19 +58,19 @@ export class ProductListComponent {
   async loadProducts(
     pageNumber: number = 1,
     pageSize: number = this.pageSize,
-    productName?: string,
-    productCode?: string
+    params?: { product_name: string; product_code: string } | null
   ) {
     const queryParams: ProductQueryParams = {
       ispagination: true,
       page: pageNumber,
       pagesize: pageSize,
     };
-    if (productName) {
-      queryParams.product_name = productName;
-    }
-    if (productCode) {
-      queryParams.product_code = productCode;
+    if (params) {
+      // Filter out null key value from params
+      const filteredParams = Object.fromEntries(
+        Object.entries(params).filter(([_, value]) => value !== null)
+      );
+      Object.assign(queryParams, filteredParams);
     }
     const productData = await this._apiService.get<ProductResponse>(
       'product',
@@ -79,5 +84,9 @@ export class ProductListComponent {
   handleAction(action: string, product: Product) {
     // Logic to handle edit action
     this.emitEvent.emit({ action: action, product });
+  }
+
+  hasPermission(id: string) {
+    return this._permisionService.hasPermission(id);
   }
 }

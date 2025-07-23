@@ -8,7 +8,61 @@
       <mat-icon>add</mat-icon> Add Stock
     </button>
   </div>
-  <app-stock-list (emitEvent)="onEmitEvent($event)"></app-stock-list>
+  <div class="d-flex flex-row gap-3">
+    <!-- Filter section: 20% width -->
+    <div style="width: 20%">
+      <mat-card class="p-4 mb-2">
+        <mat-card-header>
+          <p
+            class="fs-5 fw-semibold text-muted d-flex align-items-center gap-2">
+            Filter <mat-icon>filter_alt</mat-icon>
+          </p>
+        </mat-card-header>
+        <mat-card-content>
+          <form [formGroup]="filterForm">
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="reference_number"
+                type="text"
+                placeholder="Reference Number" />
+            </mat-form-field>
+            <mat-form-field class="w-100">
+              <mat-select
+                placeholder="Movement Type"
+                formControlName="movement_type">
+                <mat-option value="IN">In</mat-option>
+                <mat-option value="OUT">Out</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="supplier_id"
+                type="text"
+                placeholder="Supplier Id" />
+            </mat-form-field>
+            <mat-form-field class="w-100">
+              <input
+                matInput
+                formControlName="product_id"
+                type="text"
+                placeholder="Product Id" />
+            </mat-form-field> -->
+          </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-button (click)="onApply()">Apply</button>
+          <button mat-button (click)="onReset()">Reset</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <!-- Main content: 80% width -->
+    <div style="width: 80%">
+      <app-stock-list (emitEvent)="onEmitEvent($event)"></app-stock-list>
+    </div>
+  </div>
 </div>
 
 <ng-template #addStockDialog>

@@ -15,13 +15,17 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { ActivatedRoute } from '@angular/router';
 import { MasterData } from '../../../../shared/models/global.model';
-import { MASTER_DATA } from '../../../../shared/constant/db.constants';
+import {
+  MASTER_DATA,
+  PERMISSION,
+} from '../../../../shared/constant/db.constants';
 import { ApiService } from '../../../../core/services/api-interface.service';
 import { MatButtonModule } from '@angular/material/button';
 import { DialogData, User } from '../../models/user-management.model';
 import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '../../../../shared/shared.module';
 import { UserCardComponent } from '../user-card/user-card.component';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-user-management',
@@ -43,11 +47,14 @@ export class UserManagementComponent {
   @ViewChild(UserCardComponent)
   userCardComponent!: UserCardComponent;
 
+  PERMISSION = PERMISSION;
+
   constructor(
     private _dialog: MatDialog,
     private _fb: FormBuilder,
     private route: ActivatedRoute,
-    private _apiService: ApiService
+    private _apiService: ApiService,
+    private _permissionService: PermissionService
   ) {
     const parentRouteWithData = this.route.pathFromRoot.find(
       r => r.snapshot.data['masterData']
@@ -183,5 +190,9 @@ export class UserManagementComponent {
     this._dialog.closeAll();
     this.userCardComponent.loadUsers();
     // this.userListComponent.loadUsers();
+  }
+
+  hasPermission(id: string) {
+    return this._permissionService.hasPermission(id);
   }
 }

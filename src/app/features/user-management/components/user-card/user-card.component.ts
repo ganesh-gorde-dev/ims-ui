@@ -8,6 +8,8 @@ import {
 } from '../../../tenant/models/tenant.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
+import { PERMISSION } from '../../../../shared/constant/db.constants';
+import { PermissionService } from '../../../../core/services/permission.service';
 
 @Component({
   selector: 'app-user-card',
@@ -19,7 +21,13 @@ export class UserCardComponent {
   @Output() emitEvent: EventEmitter<any> = new EventEmitter<any>();
   users: any[] = [];
   tenantData!: Tenant;
-  constructor(private _apiService: ApiService, private route: ActivatedRoute) {
+
+  PERMISSION = PERMISSION;
+  constructor(
+    private _apiService: ApiService,
+    private route: ActivatedRoute,
+    private _permissionService: PermissionService
+  ) {
     this.tenantData = this.route.snapshot.data['tenantDetails'];
     // Initialization logic can go here
     this.loadUsers();
@@ -43,5 +51,9 @@ export class UserCardComponent {
   handleAction(action: string, user: User) {
     // Logic to handle edit action
     this.emitEvent.emit({ action: action, user });
+  }
+
+  hasPermission(id: string) {
+    return this._permissionService.hasPermission(id);
   }
 }

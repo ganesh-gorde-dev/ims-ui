@@ -30,6 +30,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from '../../../../shared/shared.module';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { PermissionService } from '../../../../core/services/permission.service';
+import { PERMISSION } from '../../../../shared/constant/db.constants';
 
 @Component({
   selector: 'app-product-home',
@@ -44,15 +46,17 @@ export class ProductHomeComponent implements OnInit, OnDestroy {
   @ViewChild('addProductDialog') addProductDialog!: TemplateRef<any>;
 
   addProductForm!: FormGroup;
+  filterForm!: FormGroup;
   arrCategories!: Category[];
-
+  PERMISSION = PERMISSION;
   searchTerm: string = '';
   private searchChanged: Subject<string> = new Subject<string>();
   private destroy$: Subject<void> = new Subject<void>();
   constructor(
     private _dialog: MatDialog,
     private _fb: FormBuilder,
-    private _apiService: ApiService
+    private _apiService: ApiService,
+    private _permisionService: PermissionService
   ) {
     this.initializeForm();
     this.getCategories();
@@ -60,19 +64,6 @@ export class ProductHomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // Subscribe to search changes if needed
-    this.searchChanged
-      .pipe(debounceTime(300), takeUntil(this.destroy$))
-      .subscribe((term: string) => {
-        this.productListComponent.loadProducts(
-          1,
-          this.productListComponent.pageSize,
-          term
-        );
-      });
-  }
-
-  onSearchChange(term: string) {
-    this.searchChanged.next(term);
   }
 
   initializeForm() {
@@ -83,6 +74,28 @@ export class ProductHomeComponent implements OnInit, OnDestroy {
       sellPrice: ['', Validators.required],
       purchasePrice: ['', Validators.required],
     });
+
+    this.filterForm = this._fb.group({
+      product_code: [null],
+      product_name: [null],
+    });
+  }
+
+  onApply() {
+    this.productListComponent.loadProducts(
+      1,
+      this.productListComponent.pageSize,
+      this.filterForm.value
+    );
+  }
+
+  onReset() {
+    this.filterForm.reset();
+    this.productListComponent.loadProducts(
+      1,
+      this.productListComponent.pageSize,
+      null
+    );
   }
 
   async getCategories() {
@@ -169,6 +182,10 @@ export class ProductHomeComponent implements OnInit, OnDestroy {
       default:
         console.warn('Unknown event action:', event.action);
     }
+  }
+
+  hasPermission(id: string) {
+    return this._permisionService.hasPermission(id);
   }
 
   handleEditProduct(product: Product) {

@@ -22,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class StocksComponent {
   addStockForm!: FormGroup;
+  filterForm!: FormGroup;
   arrProducts: Product[] = [];
   arrSuppliers: Supplier[] = [];
 
@@ -61,6 +62,30 @@ export class StocksComponent {
       price: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(1)]],
     });
+
+    this.filterForm = this._fb.group({
+      // product_id: [null],
+      reference_number: [null],
+      // supplier_id: [null],
+      movement_type: [null],
+    });
+  }
+
+  onApply() {
+    this.stockListComponent.loadStocks(
+      1,
+      this.stockListComponent.pageSize,
+      this.filterForm.value
+    );
+  }
+
+  onReset() {
+    this.filterForm.reset();
+    this.stockListComponent.loadStocks(
+      1,
+      this.stockListComponent.pageSize,
+      null
+    );
   }
 
   onAddStock() {
