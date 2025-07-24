@@ -70,7 +70,6 @@ export class RoleManagmentHomeComponent implements OnInit, OnDestroy {
 
   saveChanges() {
     const additions: { permission_id: string; role_id: string }[] = [];
-    const deletions: { permission_id: string; role_id: string }[] = [];
     const deleteRequests: Observable<any>[] = [];
 
     for (const perm of this.permissions) {
@@ -103,9 +102,7 @@ export class RoleManagmentHomeComponent implements OnInit, OnDestroy {
 
     forkJoin([add$, delete$]).subscribe(() => {
       this.initialMappings.clear();
-      console.log(this.initialMappings, '>>>>>>>>');
       this.loadData();
-      console.log(this.initialMappings, '>>>>>>>>');
     });
   }
 

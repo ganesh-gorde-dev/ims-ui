@@ -86,7 +86,7 @@ export const NAV_LINKS = [
   {
     label: 'Role Management',
     path: '/tenant/role',
-    icon: 'group',
+    icon: 'add_moderator',
     module: 'Role Permission',
   },
   {

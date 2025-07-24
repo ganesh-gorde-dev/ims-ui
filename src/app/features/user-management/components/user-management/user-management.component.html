@@ -67,7 +67,7 @@
           Invalid email
         </mat-error>
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field *ngIf="!dialogData.isEdit">
         <mat-label>Password</mat-label>
         <input
           type="text"

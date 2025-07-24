@@ -27,7 +27,7 @@ export class UserListComponent implements OnInit, AfterViewInit {
     'email',
     'phone_number',
     'role',
-    'actions',
+    // 'actions',
   ];
   dataSource = new MatTableDataSource<User>();
   totalCount: number = 0;

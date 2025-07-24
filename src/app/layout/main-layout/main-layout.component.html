@@ -31,8 +31,8 @@
           <mat-icon>dark_mode</mat-icon>
         </button> -->
         <!-- <button mat-icon-button [matMenuTriggerFor]="themeMenu">
-        <mat-icon>format_color_fill</mat-icon>
-      </button> -->
+          <mat-icon>format_color_fill</mat-icon>
+        </button> -->
         <mat-menu #themeMenu="matMenu">
           @for(theme of _themeService.getThemes(); track theme.id) {
           <button mat-menu-item (click)="_themeService.setTheme(theme.id)">
@@ -48,7 +48,7 @@
         <button
           mat-icon-button
           [matMenuTriggerFor]="notifMenu"
-          *ngIf="!isAdmin">
+          *ngIf="hasPermission(PERMISSION.GET_NOTIFICATION)">
           <mat-icon class="action-btn">notifications</mat-icon>
           <span *ngIf="notifications.length > 0" class="badge">{{
             notifications.length

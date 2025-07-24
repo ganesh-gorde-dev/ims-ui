@@ -369,7 +369,7 @@ export class TenantDetailsComponent implements OnInit, AfterViewInit {
 
   async onDeleteUser() {
     // Logic to delete the selected user
-    const userId = this.userForm.value.user_id; // Assuming user_id is part of the form
+    const userId = this.selectedUser.user_id; // Assuming user_id is part of the form
     await this._apiService.delete(`user/${userId}`);
     this._dialog.closeAll();
     this.userListComponent.loadUsers();

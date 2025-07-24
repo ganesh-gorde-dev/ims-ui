@@ -16,6 +16,8 @@ export interface Theme {
 export class ThemeService {
   private readonly themes: Theme[] = [
     { id: 'blue', primary: '#2F66B9', displayName: 'Blue' },
+    { id: 'yellow', primary: '#755b00', displayName: 'Yellow' },
+    { id: 'orange', primary: '#9a4600', displayName: 'Orange' },
     { id: 'green', primary: '#00796B', displayName: 'Green' },
   ];
   currentTheme = signal<Theme>(this.themes[0]);
@@ -37,6 +39,20 @@ export class ThemeService {
     //   ).matches;
     //   this.setColorScheme(prefersDark ? 'dark' : 'light');
     // }
+
+    const subdomain = window.location.hostname.split('.')[0];
+    console.log(subdomain);
+    switch (subdomain) {
+      case 'amz':
+        this.setTheme('orange');
+        break;
+      case 'blinkit':
+        this.setTheme('yellow');
+        break;
+      default:
+        this.setTheme('blue');
+        break;
+    }
   }
 
   getThemes(): Theme[] {
@@ -67,6 +83,7 @@ export class ThemeService {
 
   updateThemeClass = effect(() => {
     const theme = this.currentTheme();
+    console.log(theme);
     document.body.classList.remove(...this.themes.map(t => `${t.id}-theme`));
     document.body.classList.add(`${theme.id}-theme`);
 

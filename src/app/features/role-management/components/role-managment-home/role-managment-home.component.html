@@ -1,4 +1,4 @@
-<div>
+<div class="container-fluid">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h4>Role</h4>
@@ -6,11 +6,8 @@
     </div>
   </div>
 
-  <div>
-    <table
-      mat-table
-      [dataSource]="permissions"
-      class="custom-table mat-elevation-z8">
+  <div class="example-container mat-elevation-z8" tabindex="0">
+    <table mat-table [dataSource]="permissions" class="custom-table">
       <!-- Permission Name Column -->
       <ng-container matColumnDef="permission">
         <th mat-header-cell *matHeaderCellDef>Permission</th>

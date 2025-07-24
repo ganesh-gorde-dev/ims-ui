@@ -14,9 +14,14 @@ export class PermissionGuard implements CanActivate {
 
   async canActivate(route: ActivatedRouteSnapshot): Promise<boolean> {
     const requiredPermission = route.data['permission'];
-    await this.permissionService.init();
-    return this._tenantConfigService.isAdmin()
-      ? true
-      : this.permissionService.checkAuth(requiredPermission);
+    await this.permissionService.user();
+    const isPermissionRequired =
+      this._tenantConfigService.isAdmin() ||
+      this.permissionService.getUserDetails().role_id === 'COMPANY_ADMIN' ||
+      this.permissionService.getUserDetails().role_id === 'SUPER_ADMIN';
+    return (
+      isPermissionRequired ??
+      this.permissionService.checkAuth(requiredPermission)
+    );
   }
 }

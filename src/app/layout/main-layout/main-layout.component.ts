@@ -1,4 +1,4 @@
-import { NAV_LINKS } from './../../shared/constant/db.constants';
+import { NAV_LINKS, PERMISSION } from './../../shared/constant/db.constants';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -56,6 +56,7 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
   unreadCount = 0;
   private sub!: Subscription;
   isAdmin: boolean = false;
+  PERMISSION = PERMISSION;
   constructor(
     public _themeService: ThemeService,
     public _router: Router,
@@ -88,15 +89,23 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
         perm => perm.permission_id === permission.permission_id
       )[0].module;
     });
-    this.navLinks = NAV_LINKS.filter(nav => {
-      return permissions.includes(nav.module);
-    });
+    if (
+      _tenantConfigService.isAdmin() ||
+      _permissionService.getUserDetails().role_id === 'COMPANY_ADMIN' ||
+      _permissionService.getUserDetails().role_id === 'SUPER_ADMIN'
+    )
+      this.navLinks = NAV_LINKS;
+    else
+      this.navLinks = NAV_LINKS.filter(nav => {
+        return permissions.includes(nav.module);
+      });
     console.log(this.navLinks);
     this.isAdmin = this._tenantConfigService.isAdmin();
   }
 
   ngOnInit(): void {
-    if (!this.isAdmin) this.initializeNotifications();
+    if (this.hasPermission(PERMISSION.GET_NOTIFICATION))
+      this.initializeNotifications();
   }
 
   initializeNotifications() {
@@ -125,6 +134,10 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       route = route.firstChild;
     }
     return route;
+  }
+
+  hasPermission(id: string) {
+    return this._permissionService.hasPermission(id);
   }
 
   ngOnDestroy() {
