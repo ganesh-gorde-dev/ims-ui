@@ -84,6 +84,12 @@ export const NAV_LINKS = [
     module: 'User',
   },
   {
+    label: 'Role Management',
+    path: '/tenant/role',
+    icon: 'group',
+    module: 'Role Permission',
+  },
+  {
     label: 'Stock',
     path: '/tenant/stock',
     icon: 'inventory_2',

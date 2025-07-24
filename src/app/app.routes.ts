@@ -67,6 +67,18 @@ export const routes: Routes = [
         data: { title: 'Stock', permission: PERMISSION_MODULE.SUPPLIER },
         canActivate: [PermissionGuard],
       },
+      {
+        path: 'role',
+        loadChildren: () =>
+          import('./features/role-management/role-management.routes').then(
+            m => m.ROLE_MANAGEMENT_ROUTES
+          ),
+        data: {
+          title: 'Role',
+          permission: PERMISSION_MODULE.ROLE_PERMISSION,
+        },
+        canActivate: [PermissionGuard],
+      },
     ],
   },
   {

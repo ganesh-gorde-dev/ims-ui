@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, of } from 'rxjs';
 import { ApiService } from './api-interface.service';
-import { Permission } from '../../shared/models/global.model';
+import { Permission, RolePermission } from '../../shared/models/global.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -11,24 +12,26 @@ export class PermissionService {
   private permissionsSubject = new BehaviorSubject<Permission[]>([]);
   permissions$ = this.permissionsSubject.asObservable();
 
-  constructor(private _apiService: ApiService) {}
+  private rolePermissionsSubject = new BehaviorSubject<RolePermission[]>([]);
+  rolePermissions$ = this.rolePermissionsSubject.asObservable();
+
+  constructor(
+    private _apiService: ApiService,
+    private _route: ActivatedRoute
+  ) {}
 
   async init() {
     const permissions = await this._apiService.get<Permission[]>('permission');
 
-    const role_permissions = await this._apiService.get<Permission[]>(
+    const role_permissions = await this._apiService.get<RolePermission[]>(
       'role-permission'
     );
 
     // compare both object and filetr out permission which have permission_id in role permissions.
-    const filteredPermissions = permissions.filter(permission => {
-      return role_permissions.some(
-        rolePermission =>
-          rolePermission.permission_id === permission.permission_id
-      );
-    });
 
-    this.permissionsSubject.next(filteredPermissions);
+    this.permissionsSubject.next(permissions);
+
+    this.rolePermissionsSubject.next(role_permissions);
   }
 
   // Call this after login or from resolver
@@ -44,6 +47,17 @@ export class PermissionService {
 
   getPermissions(): Permission[] {
     return this.permissionsSubject.value;
+  }
+
+  getRolePermissions(): RolePermission[] {
+    return this.rolePermissionsSubject.value;
+  }
+
+  getCurrentRolePermissions(): RolePermission[] {
+    const role = 'MANAGER';
+    return this.rolePermissionsSubject.value.filter(
+      perm => perm.role_id === role
+    );
   }
 
   checkAuth(module: string) {

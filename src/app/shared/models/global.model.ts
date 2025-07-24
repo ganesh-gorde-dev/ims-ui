@@ -22,6 +22,11 @@ export interface Permission {
   permission_id: string;
 }
 
+export interface RolePermission {
+  role_id: string;
+  permission_id: string;
+}
+
 export interface NotificationResponse {
   data: {
     list: NotificationItem[];

@@ -21,7 +21,7 @@
 </div>
 
 <ng-template #addUserDialog>
-  <h2 mat-dialog-title>Add User</h2>
+  <h2 mat-dialog-title>{{ dialogData.isEdit ? 'Edit' : 'Add' }} User</h2>
   <mat-dialog-content>
     <form [formGroup]="userForm" class="d-flex flex-column gap-3 my-4">
       <div class="d-flex justify-content-between align-items-center gap-3">
@@ -97,7 +97,7 @@
       mat-button
       color="primary"
       [disabled]="!userForm.valid"
-      (click)="onAddUserSave()">
+      (click)="dialogData.isEdit ? onEditUser() : onAddUserSave()">
       Save
     </button>
   </mat-dialog-actions>

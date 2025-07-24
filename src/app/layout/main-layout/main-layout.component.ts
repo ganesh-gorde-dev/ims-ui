@@ -20,7 +20,11 @@ import { SpinnerService } from '../../core/services/spinner.service';
 import { Subject, Subscription, filter, map, mergeMap, takeUntil } from 'rxjs';
 import { MatDividerModule } from '@angular/material/divider';
 import { TenantConfigService } from '../../core/services/tenant-config.service';
-import { NotificationItem, Permission } from '../../shared/models/global.model';
+import {
+  NotificationItem,
+  Permission,
+  RolePermission,
+} from '../../shared/models/global.model';
 import { NotificationService } from '../../core/services/notification.service';
 import { PermissionService } from '../../core/services/permission.service';
 
@@ -75,12 +79,15 @@ export class MainLayoutComponent implements OnInit, OnDestroy {
       this.isAdminLogin = false;
     }
 
+    const allpermissions = _permissionService.getPermissions();
+    console.log(allpermissions);
     const permissions = (
-      this._permissionService.getPermissions() as Permission[]
+      this._permissionService.getRolePermissions() as RolePermission[]
     ).map(permission => {
-      return permission.module;
+      return allpermissions.filter(
+        perm => perm.permission_id === permission.permission_id
+      )[0].module;
     });
-    console.log(permissions);
     this.navLinks = NAV_LINKS.filter(nav => {
       return permissions.includes(nav.module);
     });
