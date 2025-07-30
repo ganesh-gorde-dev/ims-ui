@@ -27,6 +27,7 @@ import {
 } from '../../shared/models/global.model';
 import { NotificationService } from '../../core/services/notification.service';
 import { PermissionService } from '../../core/services/permission.service';
+import { NotificationBannerComponent } from '../../shared/notification-banner/notification-banner.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -41,6 +42,7 @@ import { PermissionService } from '../../core/services/permission.service';
     MatButtonModule,
     MatMenuModule,
     MatDividerModule,
+    NotificationBannerComponent,
   ],
   templateUrl: './main-layout.component.html',
   styleUrl: './main-layout.component.css',

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar'; // Or use ToastrService
 import { Router } from '@angular/router';
+import { ApiNotificationService } from './api-notification.service';
 
 export interface ErrorMessage {
   status: number;
@@ -13,7 +14,11 @@ export interface ErrorMessage {
   providedIn: 'root',
 })
 export class ErrorHandlerService {
-  constructor(private snackBar: MatSnackBar, private router: Router) {}
+  constructor(
+    private snackBar: MatSnackBar,
+    private notificationBannerService: ApiNotificationService,
+    private router: Router
+  ) {}
 
   handle(error: HttpErrorResponse): void {
     const status = error.status;
@@ -55,12 +60,17 @@ export class ErrorHandlerService {
 
   private show(error: ErrorMessage | ErrorMessage[]): void {
     if (Array.isArray(error)) {
-      error.forEach(msg =>
-        this.snackBar.open(msg.message, 'Close', {
-          duration: 3000,
-          horizontalPosition: 'right',
-          verticalPosition: 'top',
-        })
+      error.forEach(
+        msg =>
+          this.snackBar.open(msg.message, 'Close', {
+            duration: 3000,
+            horizontalPosition: 'right',
+            verticalPosition: 'top',
+          })
+
+        // this.notificationBannerService.error(msg.message, 'Error', {
+        //   duration: 3000,
+        // })
       );
     } else {
       this.snackBar.open(error.message, 'Close', {
@@ -68,6 +78,9 @@ export class ErrorHandlerService {
         horizontalPosition: 'right',
         verticalPosition: 'top',
       });
+      // this.notificationBannerService.error(error.message, 'Error', {
+      //   duration: 3000,
+      // });
     }
   }
 }

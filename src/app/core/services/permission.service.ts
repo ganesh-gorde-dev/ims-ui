@@ -31,18 +31,28 @@ export class PermissionService {
   ) {}
 
   async init() {
-    const permissions = await this._apiService.get<Permission[]>('permission');
-    const role_permissions = await this._apiService.get<RolePermission[]>(
-      'role-permission'
-    );
-
-    this.permissionsSubject.next(permissions);
-    this.rolePermissionsSubject.next(role_permissions);
+    if (this.permissionsSubject.value.length === 0) {
+      const permissions = await this._apiService.get<Permission[]>(
+        'permission'
+      );
+      this.permissionsSubject.next(permissions);
+    }
+    if (
+      !['SUPER_ADMIN', 'COMPANY_ADMIN'].includes(
+        this.userProfileSubject.value.role_id
+      )
+    ) {
+      const role_permissions = await this._apiService.get<RolePermission[]>(
+        'role-permission'
+      );
+      this.rolePermissionsSubject.next(role_permissions);
+    }
   }
 
   async user() {
     const userProfile = await this._apiService.get<UserProfile>('user/profile');
     this.userProfileSubject.next(userProfile);
+    this.init();
   }
 
   // Call this after login or from resolver

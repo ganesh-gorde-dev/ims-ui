@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, firstValueFrom, Observable, tap } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { firstValueFrom, of } from 'rxjs';
 import { SpinnerService } from './spinner.service';
 import { TenantConfigService } from './tenant-config.service';
-import { Environment } from '../../../environments/environment.model';
 
 export interface ApiResponse<T> {
   data: T;
@@ -44,7 +42,6 @@ export class ApiService {
           params: params,
         })
       );
-      if (!response) throw new Error('No response from API');
       return response.data;
     } catch (error) {
       throw error;

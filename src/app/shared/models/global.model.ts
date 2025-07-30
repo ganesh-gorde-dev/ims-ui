@@ -73,3 +73,17 @@ export interface Pagination {
   current_page: number;
   total_pages: number;
 }
+
+export interface ApiNotification {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title?: string;
+  message: string;
+  duration?: number; // in milliseconds, 0 for persistent
+  action?: {
+    label: string;
+    callback: () => void;
+  };
+  dismissible?: boolean;
+  timestamp: Date;
+}

@@ -85,6 +85,7 @@ export class CategoryHomeComponent {
   }
 
   onAddCategory() {
+    this.dialogData = { isEdit: false };
     const dialogRef = this._dialog.open(this.addCategoryDialog, {
       width: '600px',
       id: 'addCategoryDialog',
